@@ -1,8 +1,8 @@
 -- API CALLS
 
-local library = loadstring(game:HttpGet("file:///D:/Users/yanis/Downloads/synapse-launcher-11-17-21/scripts/kocmoc/full_source_code/bracketv3.lua"))()
-local api = loadstring(game:HttpGet("file:///D:/Users/yanis/Downloads/synapse-launcher-11-17-21/scripts/kocmoc/full_source_code/xlpapi.lua"))()
-local bssapi = loadstring(game:HttpGet("file:///D:/Users/yanis/Downloads/synapse-launcher-11-17-21/scripts/kocmoc/full_source_code/bssapi.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Pastis444/KocmocEditedByPastis444/main/bracketv3.lua"))()
+local api = loadstring(game:HttpGet("https://raw.githubusercontent.com/Pastis444/KocmocEditedByPastis444/main/xlpapi.lua"))()
+local bssapi = loadstring(game:HttpGet("https://raw.githubusercontent.com/Pastis444/KocmocEditedByPastis444/main/bssapi.lua"))()
 
 if not isfolder("kocmoc") then makefolder("kocmoc") end
 if isfile('kocmoc.txt') == false then (syn and syn.request or http_request)({ Url = "http://127.0.0.1:6463/rpc?v=1",Method = "POST",Headers = {["Content-Type"] = "application/json",["Origin"] = "https://discord.com"},Body = game:GetService("HttpService"):JSONEncode({cmd = "INVITE_BROWSER",args = {code = "9vG8UJXuNf"},nonce = game:GetService("HttpService"):GenerateGUID(false)}),writefile('kocmoc.txt', "discord")})end
