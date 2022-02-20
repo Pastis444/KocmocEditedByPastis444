@@ -17,6 +17,11 @@ function maskequip(mask) local ohString1 = "Equip" local ohTable2 = { ["Mute"] =
 local lasttouched = nil
 local done = true
 local hi = false
+local tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer()
+local tempvars = {
+    oldmaskTab = tab["EquippedAccessories"],
+    oldmask = oldmaskTab["Hat"]
+}
 
 -- Script tables
 
@@ -119,10 +124,7 @@ local temptable = {
         end
     end,
     runningfor = 0,
-    --local tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer(),
     oldtool = rtsg()["EquippedCollector"],
-    --oldmaskTab = tab["EquippedAccessories"],
-    --oldmask = oldmaskTab["Hat"],
     ['gacf'] = function(part, st)
         coordd = CFrame.new(part.Position.X, part.Position.Y+st, part.Position.Z)
         return coordd
@@ -369,8 +371,8 @@ function killmobs()
     for i,v in pairs(game:GetService("Workspace").MonsterSpawners:GetChildren()) do
         if v:FindFirstChild("Territory") then
             if v.Name ~= "Commando Chick" and v.Name ~= "CoconutCrab" and v.Name ~= "StumpSnail" and v.Name ~= "TunnelBear" and v.Name ~= "King Beetle Cave" and not v.Name:match("CaveMonster") and not v:FindFirstChild("TimerLabel", true).Visible then
-                --temptable.oldmask = rtsg()["EquippedAccessories"]["Hat"]
-                --maskequip('Demon Mask')
+                tempvars.oldmask = rtsg()["EquippedAccessories"]["Hat"]
+                maskequip('Demon Mask')
                 if v.Name:match("Werewolf") then
                     monsterpart = game:GetService("Workspace").Territories.WerewolfPlateau.w
                 elseif v.Name:match("Mushroom") then
@@ -381,7 +383,7 @@ function killmobs()
                 api.humanoidrootpart().CFrame = monsterpart.CFrame
                 repeat api.humanoidrootpart().CFrame = monsterpart.CFrame avoidmob() task.wait(1) until v:FindFirstChild("TimerLabel", true).Visible
                 for i = 1, 4 do gettoken(monsterpart.Position) end
-                --maskequip(temptable.oldmask)
+                maskequip(tempvars.oldmask)
             end
         end
     end
@@ -436,8 +438,8 @@ function farmant()
     temptable.started.ant = true
     anttable = {left = true, right = false}
     temptable.oldtool = rtsg()['EquippedCollector']
-    --temptable.oldmask = rtsg()["EquippedAccessories"]["Hat"]
-    --maskequip('Demon Mask')
+    tempvars.oldmask = rtsg()["EquippedAccessories"]["Hat"]
+    maskequip('Demon Mask')
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = "Spark Staff",["Category"] = "Collector"})
     game.ReplicatedStorage.Events.ToyEvent:FireServer("Ant Challenge")
     kocmoc.toggles.autodig = true
@@ -465,7 +467,7 @@ function farmant()
     until game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value == false
     task.wait(1)
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = temptable.oldtool,["Category"] = "Collector"})
-    --maskequip(temptable.oldmask)
+    maskequip(tempvars.oldmask)
     temptable.started.ant = false
     antpart.CanCollide = false
 end
