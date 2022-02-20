@@ -128,7 +128,6 @@ local temptable = {
         return coordd
     end
 }
---print(temptable.oldmaskTab)
 
 local planterst = {
     plantername = {},
