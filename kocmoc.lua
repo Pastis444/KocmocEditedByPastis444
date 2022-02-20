@@ -119,7 +119,7 @@ local temptable = {
         end
     end,
     runningfor = 0,
-    local tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer(),
+    --local tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer(),
     oldtool = rtsg()["EquippedCollector"],
     oldmaskTab = tab["EquippedAccessories"],
     --oldmask = oldmaskTab["Hat"],
