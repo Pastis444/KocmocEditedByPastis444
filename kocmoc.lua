@@ -121,14 +121,14 @@ local temptable = {
     runningfor = 0,
     --local tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer(),
     oldtool = rtsg()["EquippedCollector"],
-    oldmaskTab = tab["EquippedAccessories"],
+    --oldmaskTab = tab["EquippedAccessories"],
     --oldmask = oldmaskTab["Hat"],
     ['gacf'] = function(part, st)
         coordd = CFrame.new(part.Position.X, part.Position.Y+st, part.Position.Z)
         return coordd
     end
 }
-print(temptable.oldmaskTab)
+--print(temptable.oldmaskTab)
 
 local planterst = {
     plantername = {},
