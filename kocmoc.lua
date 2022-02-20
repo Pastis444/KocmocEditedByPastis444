@@ -120,7 +120,7 @@ local temptable = {
     end,
     runningfor = 0,
     oldtool = rtsg()["EquippedCollector"],
-    oldmaskTab = rstg()["EquippedAccessories"],
+    oldmaskTab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer()["EquippedAccessories"],
     oldmask = oldmaskTab["Hat"],
     ['gacf'] = function(part, st)
         coordd = CFrame.new(part.Position.X, part.Position.Y+st, part.Position.Z)
