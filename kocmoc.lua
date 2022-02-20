@@ -17,7 +17,7 @@ function maskequip(mask) local ohString1 = "Equip" local ohTable2 = { ["Mute"] =
 local lasttouched = nil
 local done = true
 local hi = false
-function oldmasks()  tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer() oldmaskTab = tab["EquippedAccessories"] oldmask = oldmaskTab["Hat"] return oldmask end
+function oldmasks() local tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer() local oldmaskTab = tab["EquippedAccessories"] local oldmask = oldmaskTab["Hat"] return oldmask end
 
 -- Script tables
 
