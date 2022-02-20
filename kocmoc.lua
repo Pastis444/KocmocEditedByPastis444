@@ -121,7 +121,7 @@ local temptable = {
     end,
     runningfor = 0,
     oldtool = rtsg()["EquippedCollector"],
-    oldequippedmask = oldmasks()
+    oldequippedmask = oldmasks(),
     ['gacf'] = function(part, st)
         coordd = CFrame.new(part.Position.X, part.Position.Y+st, part.Position.Z)
         return coordd
