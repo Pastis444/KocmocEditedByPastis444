@@ -17,14 +17,7 @@ function maskequip(mask) local ohString1 = "Equip" local ohTable2 = { ["Mute"] =
 local lasttouched = nil
 local done = true
 local hi = false
-local tempvars = {
-    ['oldequippedmask'] = function gettabble()
-            local tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer() 
-            local oldmaskTab = tab["EquippedAccessories"],
-            local oldmask = oldmaskTab["Hat"]
-            return oldmask 
-    end
-}
+function oldmasks()  tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer() oldmaskTab = tab["EquippedAccessories"] oldmask = oldmaskTab["Hat"] return oldmask end
 
 -- Script tables
 
@@ -128,6 +121,7 @@ local temptable = {
     end,
     runningfor = 0,
     oldtool = rtsg()["EquippedCollector"],
+    oldequippedmask = oldmasks()
     ['gacf'] = function(part, st)
         coordd = CFrame.new(part.Position.X, part.Position.Y+st, part.Position.Z)
         return coordd
@@ -374,7 +368,7 @@ function killmobs()
     for i,v in pairs(game:GetService("Workspace").MonsterSpawners:GetChildren()) do
         if v:FindFirstChild("Territory") then
             if v.Name ~= "Commando Chick" and v.Name ~= "CoconutCrab" and v.Name ~= "StumpSnail" and v.Name ~= "TunnelBear" and v.Name ~= "King Beetle Cave" and not v.Name:match("CaveMonster") and not v:FindFirstChild("TimerLabel", true).Visible then
-                tempvars.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+                temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
                 maskequip('Demon Mask')
                 if v.Name:match("Werewolf") then
                     monsterpart = game:GetService("Workspace").Territories.WerewolfPlateau.w
@@ -386,7 +380,7 @@ function killmobs()
                 api.humanoidrootpart().CFrame = monsterpart.CFrame
                 repeat api.humanoidrootpart().CFrame = monsterpart.CFrame avoidmob() task.wait(1) until v:FindFirstChild("TimerLabel", true).Visible
                 for i = 1, 4 do gettoken(monsterpart.Position) end
-                maskequip(tempvars.oldequippedmask)
+                maskequip(temptable.oldequippedmask)
             end
         end
     end
