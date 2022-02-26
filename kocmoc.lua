@@ -22,7 +22,7 @@ function oldmasks() local tab = game.ReplicatedStorage.Events.RetrievePlayerStat
 -- Script tables
 
 local temptable = {
-    version = "2.15.0",
+    version = "2.16.0",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -252,7 +252,8 @@ local kocmoc = {
         autoant = false,
         autoantonquest = false,
         killwindy = false,
-        godmode = false
+        godmode = false,
+        cloudvial = false
     },
     vars = {
         field = "Ant Field",
@@ -689,6 +690,7 @@ information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
 local changelog = hometab:CreateSection("Changelog")
 changelog:CreateLabel("+ Auto Ant on Quest")
+changelog:CreateLabel("+ Auto Donate Cloud Vial")
 --information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
 --information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
 
@@ -762,6 +764,8 @@ misco:CreateDropdown("Equip Masks", masktable, function(Option) local ohString1 
 misco:CreateDropdown("Equip Collectors", collectorstable, function(Option) local ohString1 = "Equip" local ohTable2 = { ["Mute"] = false, ["Type"] = Option, ["Category"] = "Collector" } game:GetService("ReplicatedStorage").Events.ItemPackageEvent:InvokeServer(ohString1, ohTable2) end)
 misco:CreateDropdown("Generate Amulet", {"Supreme Star Amulet", "Diamond Star Amulet", "Gold Star Amulet","Silver Star Amulet","Bronze Star Amulet","Moon Amulet"}, function(Option) local A_1 = Option.." Generator" local Event = game:GetService("ReplicatedStorage").Events.ToyEvent Event:FireServer(A_1) end)
 misco:CreateButton("Export Stats Table", function() local StatCache = require(game.ReplicatedStorage.ClientStatCache)writefile("Stats_"..api.nickname..".json", StatCache:Encode()) end)
+local miscd = misctab:CreateSection("Donate")
+miscd:CreateToggle("Auto Cloud Vial", nil, function(State) kocmoc.toggles.cloudvial = State end):AddToolTip("It will donate Cloud Vial every hours if you have some.")
 
 
 local extras = extrtab:CreateSection("Extras")
@@ -1083,6 +1087,16 @@ task.spawn(function() while task.wait() do
         temptable.float = false
         temptable.started.windy = false
     end
+end end)
+
+task.spawn(function() while task.wait(5) do
+    if kocmoc.toggles.cloudvial then 
+        local stats = game:GetService("ReplicatedStorage").Events.RetrievePlayerStats:InvokeServer()
+        local lastWindy = stats.SystemTimes.WindShrine
+        if os.time(os.date("!*t")) - lastWindy > 3600 then
+            local vials = stats.Eggs.CloudVial
+            game:GetService("ReplicatedStorage").Events.WindShrineDonation:InvokeServer("CloudVial", vials)
+        end
 end end)
 
 task.spawn(function() while task.wait(0.001) do
