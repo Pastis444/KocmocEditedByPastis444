@@ -250,6 +250,7 @@ local kocmoc = {
         autoplanters = false,
         autokillmobs = false,
         autoant = false,
+        autoantonquest = false,
         killwindy = false,
         godmode = false
     },
@@ -735,6 +736,7 @@ mobkill:CreateToggle("Kill Windy", nil, function(State) kocmoc.toggles.killwindy
 mobkill:CreateToggle("Auto Kill Mobs", nil, function(State) kocmoc.toggles.autokillmobs = State end):AddToolTip("Kills mobs after x pollen converting")
 mobkill:CreateToggle("Avoid Mobs", nil, function(State) kocmoc.toggles.avoidmobs = State end)
 mobkill:CreateToggle("Auto Ant", nil, function(State) kocmoc.toggles.autoant = State end):AddToolTip("You Need Spark Stuff 😋; Goes to Ant Challenge after pollen converting")
+mobkill:CreateToggle("Auto Ant On Quest", nil, function(State) kocmoc.toggles.autoantonquest = State end):AddToolTip("You Need Spark Stuff 😋; Goes to Ant Challenge after pollen converting")
 
 local amks = combtab:CreateSection("Auto Kill Mobs Settings")
 amks:CreateTextBox('Kill Mobs After x Convertions', 'default = 3', true, function(Value) kocmoc.vars.monstertimer = tonumber(Value) end)
@@ -899,6 +901,11 @@ task.spawn(function() while task.wait() do
                                 break
                             elseif d == "Red Flowers" or d == "Red Pollen" then
                                 fieldselected = game:GetService("Workspace").FlowerZones[kocmoc.bestfields.red]
+                                break
+                            end
+                        elseif string.find("Ant", text) and not string.find(v.Text, "Complete!") then
+                            if kocmoc.toggles.autoant and not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
+                                farmant()
                                 break
                             end
                         end
