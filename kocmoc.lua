@@ -904,7 +904,7 @@ task.spawn(function() while task.wait() do
                                 break
                             end
                         elseif string.find("Ant", text) and not string.find(v.Text, "Complete!") then
-                            if kocmoc.toggles.autoant and not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
+                            if kocmoc.toggles.autoantonquest and not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
                                 farmant()
                                 break
                             end
