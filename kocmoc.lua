@@ -1097,6 +1097,7 @@ task.spawn(function() while task.wait(5) do
             local vials = stats.Eggs.CloudVial
             game:GetService("ReplicatedStorage").Events.WindShrineDonation:InvokeServer("CloudVial", vials)
         end
+    end
 end end)
 
 task.spawn(function() while task.wait(0.001) do
