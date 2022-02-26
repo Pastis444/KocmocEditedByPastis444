@@ -253,7 +253,7 @@ local kocmoc = {
         autoantonquest = false,
         killwindy = false,
         godmode = false,
-        cloudvial = false
+        autocloudvial = false
     },
     vars = {
         field = "Ant Field",
@@ -764,8 +764,8 @@ misco:CreateDropdown("Equip Masks", masktable, function(Option) local ohString1 
 misco:CreateDropdown("Equip Collectors", collectorstable, function(Option) local ohString1 = "Equip" local ohTable2 = { ["Mute"] = false, ["Type"] = Option, ["Category"] = "Collector" } game:GetService("ReplicatedStorage").Events.ItemPackageEvent:InvokeServer(ohString1, ohTable2) end)
 misco:CreateDropdown("Generate Amulet", {"Supreme Star Amulet", "Diamond Star Amulet", "Gold Star Amulet","Silver Star Amulet","Bronze Star Amulet","Moon Amulet"}, function(Option) local A_1 = Option.." Generator" local Event = game:GetService("ReplicatedStorage").Events.ToyEvent Event:FireServer(A_1) end)
 misco:CreateButton("Export Stats Table", function() local StatCache = require(game.ReplicatedStorage.ClientStatCache)writefile("Stats_"..api.nickname..".json", StatCache:Encode()) end)
-local miscd = misctab:CreateSection("Donate")
-miscd:CreateToggle("Auto Cloud Vial", nil, function(State) kocmoc.toggles.cloudvial = State end):AddToolTip("It will donate Cloud Vial every hours if you have some.")
+local miscd = misctab:CreateSection("Auto Donate")
+miscd:CreateToggle("Auto Cloud Vial", nil, function(State) kocmoc.toggles.autocloudvial = State end)
 
 
 local extras = extrtab:CreateSection("Extras")
@@ -1089,17 +1089,6 @@ task.spawn(function() while task.wait() do
     end
 end end)
 
-task.spawn(function() while task.wait(5) do
-    if kocmoc.toggles.cloudvial then 
-        local stats = game:GetService("ReplicatedStorage").Events.RetrievePlayerStats:InvokeServer()
-        local lastWindy = stats.SystemTimes.WindShrine
-        if os.time(os.date("!*t")) - lastWindy > 3600 then
-            local vials = stats.Eggs.CloudVial
-            game:GetService("ReplicatedStorage").Events.WindShrineDonation:InvokeServer("CloudVial", vials)
-        end
-    end
-end end)
-
 task.spawn(function() while task.wait(0.001) do
     if kocmoc.toggles.traincrab then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-259, 111.8, 496.4) * CFrame.fromEulerAnglesXYZ(0, 110, 90) temptable.float = true temptable.float = false end
     if kocmoc.toggles.farmrares then for k,v in next, game.workspace.Collectibles:GetChildren() do if v.CFrame.YVector.Y == 1 then if v.Transparency == 0 then decal = v:FindFirstChildOfClass("Decal") for e,r in next, kocmoc.rares do if decal.Texture == r or decal.Texture == "rbxassetid://"..r then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame break end end end end end end
@@ -1212,6 +1201,14 @@ task.spawn(function() while task.wait(1) do
     if kocmoc.toggles.clock then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Wealth Clock") end
     if kocmoc.toggles.freeantpass then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Free Ant Pass Dispenser") end
     gainedhoneylabel:UpdateText("Gained Honey: "..api.suffixstring(temptable.honeycurrent - temptable.honeystart))
+    if kocmoc.toggles.autocloudvial then 
+        local stats = game:GetService("ReplicatedStorage").Events.RetrievePlayerStats:InvokeServer()
+        local lastWindy = stats.SystemTimes.WindShrine
+        if os.time(os.date("!*t")) - lastWindy > 3600 then
+            local vials = stats.Eggs.CloudVial
+            game:GetService("ReplicatedStorage").Events.WindShrineDonation:InvokeServer("CloudVial", vials)
+        end
+    end
 end end)
 
 game:GetService('RunService').Heartbeat:connect(function() 
