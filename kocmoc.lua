@@ -687,8 +687,10 @@ information:CreateLabel("Place version: "..game.PlaceVersion)
 information:CreateLabel("Script by weuz_ and mrdevl")
 information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
-information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
-information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
+local changelog = hometab:CreateSection("Changelog")
+changelog:CreateLabel("+ Auto Ant on Quest")
+--information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
+--information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
 
 
 local farmo = farmtab:CreateSection("Farming")
