@@ -301,7 +301,48 @@ local buffTable = {
     "Tropical Drink";
 }
 
+local buffs = {
+    active = {
+        blueextract = false,
+        redextract = false,
+        oil = false,
+        enzyme = false,
+        glue = false,
+        glitter = false,
+        tropicaldrink = false
+    }
+}
+
 -- functions
+
+function blueextracttimer()
+    wait(600)
+    buffs.active.blueextract = false
+end
+function redextracttimer()
+    wait(600)
+    buffs.active.redextract = false
+end
+function oiltimer()
+    wait(600)
+    buffs.active.oil = false
+end
+function enzymetimer()
+    wait(600)
+    buffs.active.enzyme = false
+end
+function gluetimer()
+    wait(600)
+    buffs.active.glue = false
+end
+function glittertimer()
+    wait(960)
+    buffs.active.glitter = false
+end
+function tropicaldrinktimer()
+    wait(600)
+    buffs.active.tropicaldrink = false
+end
 
 function statsget() local StatCache = require(game.ReplicatedStorage.ClientStatCache) local stats = StatCache:Get() return stats end
 function farm(trying)
@@ -1039,13 +1080,13 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.farmunderballoons then getballoons() end
                 if not kocmoc.toggles.donotfarmtokens and done then gettoken() end
                 if not kocmoc.toggles.farmflower then getflower() end
-                if kocmoc.toggles.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Blue Extract"}) end
-                if kocmoc.toggles.redextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Red Extract"}) end
-                if kocmoc.toggles.oil then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Oil"}) end
-                if kocmoc.toggles.enzyme then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Enzymes"}) end
-                if kocmoc.toggles.glue then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glue"}) end
-                if kocmoc.toggles.glitter then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glitter"}) end
-                if kocmoc.toggles.tropicaldrink then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Tropical Drink"}) end
+                if kocmoc.toggles.blueextract and not buffs.active.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Blue Extract"}) buffs.active.redextract = true redextracttimer() end
+                if kocmoc.toggles.redextract and not buffs.active.redextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Red Extract"}) buffs.active.redextract = true redextracttimer() end
+                if kocmoc.toggles.oil and not buffs.active.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Oil"}) buffs.active.oil = true oiltimer() end
+                if kocmoc.toggles.enzyme and not buffs.active.enzyme then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Enzymes"}) buffs.active.enzyme = true enzymetimer() end
+                if kocmoc.toggles.glue and not buffs.active.glue then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glue"}) buffs.active.glue = true gluetimer() end
+                if kocmoc.toggles.glitter and not buffs.active.glitter then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glitter"}) buffs.active.glitter = true glittertimer() end
+                if kocmoc.toggles.tropicaldrink and not buffs.active.tropicaldrink then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Tropical Drink"}) buffs.active.tropicaldrink = true tropicaldrinktimer() end
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion then
             temptable.tokensfarm = false
