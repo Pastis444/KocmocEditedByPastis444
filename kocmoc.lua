@@ -316,32 +316,46 @@ local buffs = {
 -- functions
 
 function blueextracttimer()
-    wait(600)
-    buffs.active.blueextract = false
+    if buffs.active.blueextract then
+        wait(600)
+        buffs.active.blueextract = false
+    end
 end
 function redextracttimer()
-    wait(600)
-    buffs.active.redextract = false
+    if buffs.active.redextract then
+        wait(600)
+        buffs.active.redextract = false
+    end
 end
 function oiltimer()
-    wait(600)
-    buffs.active.oil = false
+    if buffs.active.oil then
+        wait(600)
+        buffs.active.oil = false
+    end
 end
 function enzymetimer()
-    wait(600)
-    buffs.active.enzyme = false
+    if buffs.active.enzyme then
+        wait(600)
+        buffs.active.enzyme = false
+    end
 end
 function gluetimer()
-    wait(600)
-    buffs.active.glue = false
+    if buffs.active.glue then
+        wait(600)
+        buffs.active.glue = false
+    end
 end
 function glittertimer()
-    wait(960)
-    buffs.active.glitter = false
+    if buffs.active.glitter then
+        wait(960)
+        buffs.active.glitter = false
+    end
 end
 function tropicaldrinktimer()
-    wait(600)
-    buffs.active.tropicaldrink = false
+    if buffs.active.tropicaldrink then
+        wait(600)
+        buffs.active.tropicaldrink = false
+    end
 end
 
 function statsget() local StatCache = require(game.ReplicatedStorage.ClientStatCache) local stats = StatCache:Get() return stats end
