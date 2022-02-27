@@ -315,49 +315,6 @@ local buffs = {
 
 -- functions
 
-function blueextracttimer()
-    if buffs.active.blueextract then
-        wait(600)
-        buffs.active.blueextract = false
-    end
-end
-function redextracttimer()
-    if buffs.active.redextract then
-        wait(600)
-        buffs.active.redextract = false
-    end
-end
-function oiltimer()
-    if buffs.active.oil then
-        wait(600)
-        buffs.active.oil = false
-    end
-end
-function enzymetimer()
-    if buffs.active.enzyme then
-        wait(600)
-        buffs.active.enzyme = false
-    end
-end
-function gluetimer()
-    if buffs.active.glue then
-        wait(600)
-        buffs.active.glue = false
-    end
-end
-function glittertimer()
-    if buffs.active.glitter then
-        wait(960)
-        buffs.active.glitter = false
-    end
-end
-function tropicaldrinktimer()
-    if buffs.active.tropicaldrink then
-        wait(600)
-        buffs.active.tropicaldrink = false
-    end
-end
-
 function statsget() local StatCache = require(game.ReplicatedStorage.ClientStatCache) local stats = StatCache:Get() return stats end
 function farm(trying)
     if kocmoc.toggles.loopfarmspeed then game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = kocmoc.vars.farmspeed end
@@ -1094,13 +1051,13 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.farmunderballoons then getballoons() end
                 if not kocmoc.toggles.donotfarmtokens and done then gettoken() end
                 if not kocmoc.toggles.farmflower then getflower() end
-                if kocmoc.toggles.blueextract and not buffs.active.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Blue Extract"}) buffs.active.blueextract = true blueextracttimer() end
-                if kocmoc.toggles.redextract and not buffs.active.redextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Red Extract"}) buffs.active.redextract = true redextracttimer() end
-                if kocmoc.toggles.oil and not buffs.active.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Oil"}) buffs.active.oil = true oiltimer() end
-                if kocmoc.toggles.enzyme and not buffs.active.enzyme then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Enzymes"}) buffs.active.enzyme = true enzymetimer() end
-                if kocmoc.toggles.glue and not buffs.active.glue then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glue"}) buffs.active.glue = true gluetimer() end
-                if kocmoc.toggles.glitter and not buffs.active.glitter then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glitter"}) buffs.active.glitter = true glittertimer() end
-                if kocmoc.toggles.tropicaldrink and not buffs.active.tropicaldrink then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Tropical Drink"}) buffs.active.tropicaldrink = true tropicaldrinktimer() end
+                --if kocmoc.toggles.blueextract and not buffs.active.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Blue Extract"}) buffs.active.blueextract = true blueextracttimer() end
+                --if kocmoc.toggles.redextract and not buffs.active.redextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Red Extract"}) buffs.active.redextract = true redextracttimer() end
+                --if kocmoc.toggles.oil and not buffs.active.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Oil"}) buffs.active.oil = true oiltimer() end
+                --if kocmoc.toggles.enzyme and not buffs.active.enzyme then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Enzymes"}) buffs.active.enzyme = true enzymetimer() end
+                --if kocmoc.toggles.glue and not buffs.active.glue then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glue"}) buffs.active.glue = true gluetimer() end
+                --if kocmoc.toggles.glitter and not buffs.active.glitter then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glitter"}) buffs.active.glitter = true glittertimer() end
+                --if kocmoc.toggles.tropicaldrink and not buffs.active.tropicaldrink then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Tropical Drink"}) buffs.active.tropicaldrink = true tropicaldrinktimer() end
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion then
             temptable.tokensfarm = false
