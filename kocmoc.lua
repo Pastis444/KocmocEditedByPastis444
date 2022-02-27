@@ -1080,7 +1080,7 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.farmunderballoons then getballoons() end
                 if not kocmoc.toggles.donotfarmtokens and done then gettoken() end
                 if not kocmoc.toggles.farmflower then getflower() end
-                if kocmoc.toggles.blueextract and not buffs.active.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Blue Extract"}) buffs.active.redextract = true redextracttimer() end
+                if kocmoc.toggles.blueextract and not buffs.active.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Blue Extract"}) buffs.active.blueextract = true blueextracttimer() end
                 if kocmoc.toggles.redextract and not buffs.active.redextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Red Extract"}) buffs.active.redextract = true redextracttimer() end
                 if kocmoc.toggles.oil and not buffs.active.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Oil"}) buffs.active.oil = true oiltimer() end
                 if kocmoc.toggles.enzyme and not buffs.active.enzyme then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Enzymes"}) buffs.active.enzyme = true enzymetimer() end
