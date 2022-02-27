@@ -914,6 +914,7 @@ task.spawn(function() while task.wait() do
                             if not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
                                 print('Ants Quest Not Completed Found ! :"', v.Text,'"')
                                 --farmant()
+                                break
                             end
                         end
                     end
