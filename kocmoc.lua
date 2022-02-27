@@ -912,8 +912,7 @@ task.spawn(function() while task.wait() do
                             end
                         elseif kocmoc.toggles.autoantonquest and string.find(v.Text, "Ants.") and not string.find(v.Text, "Complete!") then
                             if not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
-                                print('Ants Quest Not Completed Found ! :"', v.Text,'"')
-                                --farmant()
+                                farmant()
                                 break
                             end
                         end
