@@ -22,7 +22,7 @@ function oldmasks() local tab = game.ReplicatedStorage.Events.RetrievePlayerStat
 -- Script tables
 
 local temptable = {
-    version = "2.16.0",
+    version = "2.17.0",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -204,6 +204,7 @@ local kocmoc = {
     killerkocmoc = {},
     bltokens = {},
     toggles = {
+        convertpollen = false,
         autofarm = false,
         farmclosestleaf = false,
         farmbubbles = false,
@@ -253,7 +254,15 @@ local kocmoc = {
         autoantonquest = false,
         killwindy = false,
         godmode = false,
-        autocloudvial = false
+        autocloudvial = false,
+        demonmask = false,
+        blueextract = false,
+        redextract = false,
+        oil = false,
+        glue = false,
+        glitter = false,
+        enzyme = false,
+        tropicaldrink = false
     },
     vars = {
         field = "Ant Field",
@@ -281,6 +290,16 @@ local kocmoc = {
 }
 
 local defaultkocmoc = kocmoc
+
+local buffTable = {
+    "Blue Extract";
+    "Red Extract";
+    "Oil";
+    "Enzymes";
+    "Glue";
+    "Glitter";
+    "Tropical Drink";
+}
 
 -- functions
 
@@ -372,7 +391,9 @@ function killmobs()
         if v:FindFirstChild("Territory") then
             if v.Name ~= "Commando Chick" and v.Name ~= "CoconutCrab" and v.Name ~= "StumpSnail" and v.Name ~= "TunnelBear" and v.Name ~= "King Beetle Cave" and not v.Name:match("CaveMonster") and not v:FindFirstChild("TimerLabel", true).Visible then
                 temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
-                maskequip('Demon Mask')
+                if kocmoc.toggles.demonmask then 
+                    maskequip('Demon Mask')
+                end
                 if v.Name:match("Werewolf") then
                     monsterpart = game:GetService("Workspace").Territories.WerewolfPlateau.w
                 elseif v.Name:match("Mushroom") then
@@ -439,7 +460,9 @@ function farmant()
     anttable = {left = true, right = false}
     temptable.oldtool = rtsg()['EquippedCollector']
     temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
-    maskequip('Demon Mask')
+    if kocmoc.toggles.demonmask then 
+        maskequip('Demon Mask')
+    end
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = "Spark Staff",["Category"] = "Collector"})
     game.ReplicatedStorage.Events.ToyEvent:FireServer("Ant Challenge")
     kocmoc.toggles.autodig = true
@@ -527,7 +550,7 @@ end
 
 function converthoney()
     task.wait(0)
-    if temptable.converting then
+    if temptable.converting and not kocmoc.toggles.convertpollen then
         if game.Players.LocalPlayer.PlayerGui.ScreenGui.ActivateButton.TextBox.Text ~= "Stop Making Honey" and game.Players.LocalPlayer.PlayerGui.ScreenGui.ActivateButton.BackgroundColor3 ~= Color3.new(201, 39, 28) or (game:GetService("Players").LocalPlayer.SpawnPos.Value.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude > 10 then
             api.tween(1, game:GetService("Players").LocalPlayer.SpawnPos.Value * CFrame.fromEulerAnglesXYZ(0, 110, 0) + Vector3.new(0, 0, 9))
             task.wait(.9)
@@ -675,6 +698,7 @@ local hometab = Window:CreateTab("Home")
 local farmtab = Window:CreateTab("Farming")
 local combtab = Window:CreateTab("Combat")
 local wayptab = Window:CreateTab("Waypoints")
+local itemtab = Window:CreateTab("Items")
 local misctab = Window:CreateTab("Misc")
 local extrtab = Window:CreateTab("Extra")
 local setttab = Window:CreateTab("Settings")
@@ -692,6 +716,8 @@ local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
 local changelog = hometab:CreateSection("Changelog")
 changelog:CreateLabel("+ Auto Ant on Quest")
 changelog:CreateLabel("+ Auto Donate Cloud Vial")
+changelog:CreateLabel("+ Items Tab")
+changelog:CreateLabel("+ Auto Demon Mask")
 --information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
 --information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
 
@@ -699,6 +725,7 @@ changelog:CreateLabel("+ Auto Donate Cloud Vial")
 local farmo = farmtab:CreateSection("Farming")
 local fielddropdown = farmo:CreateDropdown("Field", fieldstable, function(String) kocmoc.vars.field = String end) fielddropdown:SetOption(fieldstable[1])
 convertatslider = farmo:CreateSlider("Convert At", 0, 100, 100, false, function(Value) kocmoc.vars.convertat = Value end)
+farmo:CreateToggle("Don't Convert Pollen", nil, function(State) kocmoc.toggles.convertpollen = State end)
 local autofarmtoggle = farmo:CreateToggle("Autofarm ⚙", nil, function(State) kocmoc.toggles.autofarm = State end) autofarmtoggle:CreateKeybind("U", function(Key) end)
 farmo:CreateToggle("Autodig", nil, function(State) kocmoc.toggles.autodig = State end)
 farmo:CreateToggle("Auto Sprinkler", nil, function(State) kocmoc.toggles.autosprinkler = State end)
@@ -742,6 +769,8 @@ mobkill:CreateToggle("Auto Kill Mobs", nil, function(State) kocmoc.toggles.autok
 mobkill:CreateToggle("Avoid Mobs", nil, function(State) kocmoc.toggles.avoidmobs = State end)
 mobkill:CreateToggle("Auto Ant", nil, function(State) kocmoc.toggles.autoant = State end):AddToolTip("You Need Spark Stuff 😋; Goes to Ant Challenge after pollen converting")
 mobkill:CreateToggle("Auto Ant On Quest", nil, function(State) kocmoc.toggles.autoantonquest = State end):AddToolTip("You Need Spark Stuff 😋; Goes to Ant Challenge after pollen converting")
+mobkill:CreateToggle("Auto Demon Mask", nil, function(State) kocmoc.toggles.demonmask = State end):AddToolTip("You Need Demon Mask 😈; Equip Demon Mask to Kill Mob")
+
 
 local amks = combtab:CreateSection("Auto Kill Mobs Settings")
 amks:CreateTextBox('Kill Mobs After x Convertions', 'default = 3', true, function(Value) kocmoc.vars.monstertimer = tonumber(Value) end)
@@ -752,6 +781,20 @@ wayp:CreateDropdown("Field Teleports", fieldstable, function(Option) game.Player
 wayp:CreateDropdown("Monster Teleports", spawnerstable, function(Option) d = game:GetService("Workspace").MonsterSpawners:FindFirstChild(Option) game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(d.Position.X, d.Position.Y+3, d.Position.Z) end)
 wayp:CreateDropdown("Toys Teleports", toystable, function(Option) d = game:GetService("Workspace").Toys:FindFirstChild(Option).Platform game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(d.Position.X, d.Position.Y+3, d.Position.Z) end)
 wayp:CreateButton("Teleport to hive", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Players").LocalPlayer.SpawnPos.Value end)
+
+local useitems = itemtab:CreateSection("Use Items")
+useitems:CreateButton("Use All Buffs ⚠️",function() for i,v in pairs(buffTable) do  game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=v}) end end)
+useitems:CreateLabel("")
+for i,v in pairs(buffTable) do useitems:CreateButton("Use "..v,function() game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=v}) end) end
+
+local itemt = itemtab:CreateSection("Auto Use Items")
+itemt:CreateToggle("Use Blue Extract", nil, function(State) kocmoc.toggles.blueextract = State end)
+itemt:CreateToggle("Use Red Extract", nil, function(State) kocmoc.toggles.redextract = State end)
+itemt:CreateToggle("Use Oil", nil, function(State) kocmoc.toggles.oil = State end)
+itemt:CreateToggle("Use Enzyme", nil, function(State) kocmoc.toggles.enzyme = State end)
+itemt:CreateToggle("Use Glue", nil, function(State) kocmoc.toggles.glue = State end)
+itemt:CreateToggle("Use Glitter", nil, function(State) kocmoc.toggles.glitter = State end)
+itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
 
 
 local miscc = misctab:CreateSection("Misc")
@@ -962,7 +1005,9 @@ task.spawn(function() while task.wait() do
                     while kocmoc.toggles.killmondo and game.Workspace.Monsters:FindFirstChild("Mondo Chick (Lvl 8)") and not temptable.started.vicious and not temptable.started.monsters do
                         temptable.started.mondo = true
                         temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
-                        maskequip('Demon Mask')
+                        if kocmoc.toggles.demonmask then 
+                            maskequip('Demon Mask')
+                        end
                         while game.Workspace.Monsters:FindFirstChild("Mondo Chick (Lvl 8)") do
                             disableall()
                             game:GetService("Workspace").Map.Ground.HighBlock.CanCollide = false 
@@ -994,21 +1039,28 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.farmunderballoons then getballoons() end
                 if not kocmoc.toggles.donotfarmtokens and done then gettoken() end
                 if not kocmoc.toggles.farmflower then getflower() end
+                if kocmoc.toggles.blueextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Blue Extract"}) end
+                if kocmoc.toggles.redextract then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Red Extract"}) end
+                if kocmoc.toggles.oil then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Oil"}) end
+                if kocmoc.toggles.enzyme then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Enzymes"}) end
+                if kocmoc.toggles.glue then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glue"}) end
+                if kocmoc.toggles.glitter then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Glitter"}) end
+                if kocmoc.toggles.tropicaldrink then game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]="Tropical Drink"}) end
             end
-        elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) then
+        elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion then
             temptable.tokensfarm = false
             api.tween(2, game:GetService("Players").LocalPlayer.SpawnPos.Value * CFrame.fromEulerAnglesXYZ(0, 110, 0) + Vector3.new(0, 0, 9))
             task.wait(2)
             temptable.converting = true
             repeat
                 converthoney()
-            until game.Players.LocalPlayer.CoreStats.Pollen.Value == 0
+            until game.Players.LocalPlayer.CoreStats.Pollen.Value == 0 or kocmoc.toggles.convertpollen
             if kocmoc.toggles.convertballoons and gethiveballoon() then
                 task.wait(6)
                 repeat
                     task.wait()
                     converthoney()
-                until gethiveballoon() == false or not kocmoc.toggles.convertballoons
+                until gethiveballoon() == false or not kocmoc.toggles.convertballoons or kocmoc.toggles.convertpollen
             end
             temptable.converting = false
             temptable.act = temptable.act + 1
@@ -1064,7 +1116,9 @@ task.spawn(function() while task.wait() do
     if kocmoc.toggles.killwindy and temptable.detected.windy and not temptable.converting and not temptable.started.vicious and not temptable.started.mondo and not temptable.started.monsters then
         temptable.started.windy = true
         temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
-        maskequip('Demon Mask')
+        if kocmoc.toggles.demonmask then 
+            maskequip('Demon Mask')
+        end
         wlvl = "" aw = false awb = false -- some variable for autowindy, yk?
         disableall()
         while kocmoc.toggles.killwindy and temptable.detected.windy do
