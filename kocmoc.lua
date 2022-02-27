@@ -909,7 +909,7 @@ task.spawn(function() while task.wait() do
                                 fieldselected = game:GetService("Workspace").FlowerZones[kocmoc.bestfields.red]
                                 break
                             end
-                        elseif string.find("Ant", text) and not string.find(v.Text, "Complete!") then
+                        elseif string.find(v.Text, "Ants.") and not string.find(v.Text, "Complete!") then
                             if kocmoc.toggles.autoantonquest and not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
                                 farmant()
                                 break
@@ -960,6 +960,8 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.killmondo then
                     while kocmoc.toggles.killmondo and game.Workspace.Monsters:FindFirstChild("Mondo Chick (Lvl 8)") and not temptable.started.vicious and not temptable.started.monsters do
                         temptable.started.mondo = true
+                        temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+                        maskequip('Demon Mask')
                         while game.Workspace.Monsters:FindFirstChild("Mondo Chick (Lvl 8)") do
                             disableall()
                             game:GetService("Workspace").Map.Ground.HighBlock.CanCollide = false 
@@ -974,6 +976,7 @@ task.spawn(function() while task.wait() do
                         end 
                         enableall() 
                         api.tween(2, fieldpos) 
+                        maskequip(temptable.oldequippedmask)
                         temptable.started.mondo = false
                     end
                 end
@@ -1059,6 +1062,8 @@ end)
 task.spawn(function() while task.wait() do
     if kocmoc.toggles.killwindy and temptable.detected.windy and not temptable.converting and not temptable.started.vicious and not temptable.started.mondo and not temptable.started.monsters then
         temptable.started.windy = true
+        temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+        maskequip('Demon Mask')
         wlvl = "" aw = false awb = false -- some variable for autowindy, yk?
         disableall()
         while kocmoc.toggles.killwindy and temptable.detected.windy do
@@ -1085,6 +1090,7 @@ task.spawn(function() while task.wait() do
         end 
         enableall()
         temptable.float = false
+        maskequip(temptable.oldequippedmask)
         temptable.started.windy = false
     end
 end end)
