@@ -438,7 +438,7 @@ function farmant()
     temptable.started.ant = true
     anttable = {left = true, right = false}
     temptable.oldtool = rtsg()['EquippedCollector']
-    tempvars.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+    temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
     maskequip('Demon Mask')
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = "Spark Staff",["Category"] = "Collector"})
     game.ReplicatedStorage.Events.ToyEvent:FireServer("Ant Challenge")
@@ -467,7 +467,7 @@ function farmant()
     until game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value == false
     task.wait(1)
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = temptable.oldtool,["Category"] = "Collector"})
-    maskequip(tempvars.oldequippedmask)
+    maskequip(temptable.oldequippedmask)
     temptable.started.ant = false
     antpart.CanCollide = false
 end
