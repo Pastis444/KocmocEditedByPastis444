@@ -342,11 +342,14 @@ function itemtimers(item)
             end
         end
     elseif item == "snowflake" then
+        print("It's SNOWFLAKE !!!")
         if buffs.timers[item] == 0 then 
             buffs.timers[item] = os.time()
+            print("SNOWFLAKE Timers : ", buffs.timers[item])
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
         else
             if buffs.timers[item] - os.time() >= 9 then
+                print("SNOWFLAKE Used")
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             end
         end
