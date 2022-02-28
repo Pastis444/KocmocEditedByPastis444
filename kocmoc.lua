@@ -265,7 +265,7 @@ local kocmoc = {
         tropicaldrink = false
     },
     vars = {
-        field = "Ant Field",,
+        field = "Ant Field",
         demoncounter = 0,
         convertat = 100,
         farmspeed = 60,
