@@ -515,7 +515,7 @@ function farmant()
         temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
     end
     if kocmoc.toggles.demonmask then 
-        kocmoc.vars.demoncounter = kocmoc.vars.demoncounter + 1 
+        kocmoc.vars.demoncounter = kocmoc.vars.demoncounter + 1
         maskequip('Demon Mask')
     end
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = "Spark Staff",["Category"] = "Collector"})
