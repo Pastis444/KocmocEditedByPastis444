@@ -346,7 +346,7 @@ function itemtimers(item)
             buffs.timers[item] = os.time()
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
         else
-            if buffs.timers[item] - os.time() >= 10 then
+            if buffs.timers[item] - os.time() >= 9 then
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             end
         end
@@ -1243,7 +1243,7 @@ task.spawn(function() while task.wait() do
     end
 end end)
 
-task.spawn(function() while task.wait(0.1) do
+task.spawn(function() while task.wait() do
     if kocmoc.toggles.blueextract then itemtimers('blueextract') end
     if kocmoc.toggles.redextract then itemtimers('redextract') end
     if kocmoc.toggles.oil then itemtimers('oil') end
