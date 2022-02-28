@@ -328,6 +328,7 @@ function itemtimers(item)
     if item == "glitter" then
         if buffs.timers[item] == 0 then 
             buffs.timers[item] = os.time()
+            game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
         else
             if buffs.timers[item] - os.time() >= 910 then
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
@@ -336,6 +337,7 @@ function itemtimers(item)
     else
         if buffs.timers[item] == 0 then 
             buffs.timers[item] = os.time()
+            game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
         else
             if buffs.timers[item] - os.time() >= 600 then
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
@@ -1035,7 +1037,7 @@ task.spawn(function() while task.wait() do
                 fieldposition = fieldpos.Position
             end
         end
-        if tonumber(pollenpercentage) < tonumber(kocmoc.vars.convertat) then
+        if tonumber(pollenpercentage) < tonumber(kocmoc.vars.convertat) or kocmoc.toggles.noconvertpollen then
             if not temptable.tokensfarm then
                 api.tween(2, fieldpos)
                 task.wait(2)
