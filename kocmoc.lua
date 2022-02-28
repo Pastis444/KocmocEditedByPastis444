@@ -348,7 +348,7 @@ function itemtimers(item)
             print("SNOWFLAKE Timers : ", buffs.timers[item])
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
         else
-            if os.time() - buffs.timers[item] >= 9 then
+            if os.time() - buffs.timers[item] >= 10 then
                 print("SNOWFLAKE Used")
                 print("SNOWFLAKE Timers : ", buffs.timers[item])
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
