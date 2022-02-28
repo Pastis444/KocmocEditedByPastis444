@@ -265,7 +265,8 @@ local kocmoc = {
         tropicaldrink = false
     },
     vars = {
-        field = "Ant Field",
+        field = "Ant Field",,
+        demoncounter = 0,
         convertat = 100,
         farmspeed = 60,
         prefer = "Tokens",
@@ -433,8 +434,11 @@ function killmobs()
     for i,v in pairs(game:GetService("Workspace").MonsterSpawners:GetChildren()) do
         if v:FindFirstChild("Territory") then
             if v.Name ~= "Commando Chick" and v.Name ~= "CoconutCrab" and v.Name ~= "StumpSnail" and v.Name ~= "TunnelBear" and v.Name ~= "King Beetle Cave" and not v.Name:match("CaveMonster") and not v:FindFirstChild("TimerLabel", true).Visible then
-                temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+                if kocmoc.vars.demoncounter == 0 then
+                    temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+                end
                 if kocmoc.toggles.demonmask then 
+                    kocmoc.vars.demoncounter = kocmoc.vars.demoncounter + 1 
                     maskequip('Demon Mask')
                 end
                 if v.Name:match("Werewolf") then
@@ -447,7 +451,12 @@ function killmobs()
                 api.humanoidrootpart().CFrame = monsterpart.CFrame
                 repeat api.humanoidrootpart().CFrame = monsterpart.CFrame avoidmob() task.wait(1) until v:FindFirstChild("TimerLabel", true).Visible
                 for i = 1, 4 do gettoken(monsterpart.Position) end
-                maskequip(temptable.oldequippedmask)
+                if kocmoc.toggles.demonmask then 
+                    kocmoc.vars.demoncounter = kocmoc.vars.demoncounter - 1
+                end 
+                if kocmoc.vars.demoncounter == 0 then
+                    maskequip(temptable.oldequippedmask)
+                end
             end
         end
     end
@@ -502,8 +511,11 @@ function farmant()
     temptable.started.ant = true
     anttable = {left = true, right = false}
     temptable.oldtool = rtsg()['EquippedCollector']
-    temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+    if kocmoc.vars.demoncounter == 0 then
+        temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+    end
     if kocmoc.toggles.demonmask then 
+        kocmoc.vars.demoncounter = kocmoc.vars.demoncounter + 1 
         maskequip('Demon Mask')
     end
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = "Spark Staff",["Category"] = "Collector"})
@@ -533,7 +545,12 @@ function farmant()
     until game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value == false
     task.wait(1)
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = temptable.oldtool,["Category"] = "Collector"})
-    maskequip(temptable.oldequippedmask)
+    if kocmoc.toggles.demonmask then 
+        kocmoc.vars.demoncounter = kocmoc.vars.demoncounter - 1 
+    end
+    if kocmoc.vars.demoncounter == 0 then
+        maskequip(temptable.oldequippedmask)
+    end
     temptable.started.ant = false
     antpart.CanCollide = false
 end
@@ -1047,8 +1064,11 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.killmondo then
                     while kocmoc.toggles.killmondo and game.Workspace.Monsters:FindFirstChild("Mondo Chick (Lvl 8)") and not temptable.started.vicious and not temptable.started.monsters do
                         temptable.started.mondo = true
-                        temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+                        if kocmoc.vars.demoncounter == 0 then
+                            temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+                        end
                         if kocmoc.toggles.demonmask then 
+                            kocmoc.vars.demoncounter = kocmoc.vars.demoncounter + 1 
                             maskequip('Demon Mask')
                         end
                         while game.Workspace.Monsters:FindFirstChild("Mondo Chick (Lvl 8)") do
@@ -1064,8 +1084,13 @@ task.spawn(function() while task.wait() do
                             gettoken(CFrame.new(73.2, 176.35, -167).Position) 
                         end 
                         enableall() 
-                        api.tween(2, fieldpos) 
-                        maskequip(temptable.oldequippedmask)
+                        api.tween(2, fieldpos)
+                        if kocmoc.toggles.demonmask then 
+                            kocmoc.vars.demoncounter = kocmoc.vars.demoncounter - 1
+                        end
+                        if kocmoc.vars.demoncounter == 0 then
+                            maskequip(temptable.oldequippedmask)
+                        end
                         temptable.started.mondo = false
                     end
                 end
@@ -1158,8 +1183,11 @@ end)
 task.spawn(function() while task.wait() do
     if kocmoc.toggles.killwindy and temptable.detected.windy and not temptable.converting and not temptable.started.vicious and not temptable.started.mondo and not temptable.started.monsters then
         temptable.started.windy = true
-        temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+        if kocmoc.vars.demoncounter == 0 then
+            temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+        end
         if kocmoc.toggles.demonmask then 
+            kocmoc.vars.demoncounter = kocmoc.vars.demoncounter + 1 
             maskequip('Demon Mask')
         end
         wlvl = "" aw = false awb = false -- some variable for autowindy, yk?
@@ -1188,7 +1216,12 @@ task.spawn(function() while task.wait() do
         end 
         enableall()
         temptable.float = false
-        maskequip(temptable.oldequippedmask)
+        if kocmoc.toggles.demonmask then 
+            kocmoc.vars.demoncounter = kocmoc.vars.demoncounter - 1 
+        end
+        if kocmoc.vars.demoncounter == 0 then
+            maskequip(temptable.oldequippedmask)
+        end
         temptable.started.windy = false
     end
 end end)
