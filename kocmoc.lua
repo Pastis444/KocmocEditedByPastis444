@@ -1228,6 +1228,16 @@ task.spawn(function() while task.wait() do
     end
 end end)
 
+task.spawn(function() while task.wait(0.1) do
+    if kocmoc.toggles.blueextract then itemtimers('blueextract') end
+    if kocmoc.toggles.redextract then itemtimers('redextract') end
+    if kocmoc.toggles.oil then itemtimers('oil') end
+    if kocmoc.toggles.enzyme then itemtimers('enzyme') end
+    if kocmoc.toggles.glue then itemtimers('glue') end
+    if kocmoc.toggles.glitter then itemtimers('glitter') end
+    if kocmoc.toggles.tropicaldrink then itemtimers('tropicaldrink') end
+end end)
+
 task.spawn(function() while task.wait(0.001) do
     if kocmoc.toggles.traincrab then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-259, 111.8, 496.4) * CFrame.fromEulerAnglesXYZ(0, 110, 90) temptable.float = true temptable.float = false end
     if kocmoc.toggles.farmrares then for k,v in next, game.workspace.Collectibles:GetChildren() do if v.CFrame.YVector.Y == 1 then if v.Transparency == 0 then decal = v:FindFirstChildOfClass("Decal") for e,r in next, kocmoc.rares do if decal.Texture == r or decal.Texture == "rbxassetid://"..r then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame break end end end end end end
