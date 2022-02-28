@@ -300,7 +300,7 @@ local buffTable = {
     "Glue";
     "Glitter";
     "Tropical Drink";
-    "Snowflake";
+    "Snowflake"
 }
 
 local buffs = {
