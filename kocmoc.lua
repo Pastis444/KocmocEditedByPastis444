@@ -337,7 +337,7 @@ function itemtimers(item)
             buffs.timers[item] = os.time()
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
         else
-            if buffs.timers[item] - os.time() >= 910 then
+            if os.time() - buffs.timers[item] >= 910 then
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
                 buffs.timers[item] = os.time()
             end
@@ -348,8 +348,7 @@ function itemtimers(item)
             print("SNOWFLAKE Timers : ", buffs.timers[item])
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
         else
-            print('Entered into Else !')
-            if buffs.timers[item] - os.time() >= 9 then
+            if os.time() - buffs.timers[item] >= 9 then
                 print("SNOWFLAKE Used")
                 print("SNOWFLAKE Timers : ", buffs.timers[item])
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
@@ -361,7 +360,7 @@ function itemtimers(item)
             buffs.timers[item] = os.time()
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
         else
-            if buffs.timers[item] - os.time() >= 600 then
+            if os.time() - buffs.timers[item] >= 600 then
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
                 buffs.timers[item] = os.time()
             end
