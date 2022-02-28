@@ -339,10 +339,10 @@ function itemtimers(item)
         else
             if buffs.timers[item] - os.time() >= 910 then
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
+                buffs.timers[item] = os.time()
             end
         end
     elseif item == "snowflake" then
-        print("It's SNOWFLAKE !!!")
         if buffs.timers[item] == 0 then 
             buffs.timers[item] = os.time()
             print("SNOWFLAKE Timers : ", buffs.timers[item])
@@ -350,7 +350,9 @@ function itemtimers(item)
         else
             if buffs.timers[item] - os.time() >= 9 then
                 print("SNOWFLAKE Used")
+                print("SNOWFLAKE Timers : ", buffs.timers[item])
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
+                buffs.timers[item] = os.time()
             end
         end
     else
@@ -360,6 +362,7 @@ function itemtimers(item)
         else
             if buffs.timers[item] - os.time() >= 600 then
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
+                buffs.timers[item] = os.time()
             end
         end
     end
