@@ -324,7 +324,7 @@ local buffs = {
 
 -- functions
 
-function itemtimers(item):
+function itemtimers(item)
     if item == "glitter" then
         if buffs.timers[item] == 0 then 
             buffs.timers[item] = os.time()
