@@ -204,7 +204,7 @@ local kocmoc = {
     killerkocmoc = {},
     bltokens = {},
     toggles = {
-        convertpollen = false,
+        noconvertpollen = false,
         autofarm = false,
         farmclosestleaf = false,
         farmbubbles = false,
@@ -591,7 +591,7 @@ end
 
 function converthoney()
     task.wait(0)
-    if temptable.converting and not kocmoc.toggles.convertpollen then
+    if temptable.converting and not kocmoc.toggles.noconvertpollen then
         if game.Players.LocalPlayer.PlayerGui.ScreenGui.ActivateButton.TextBox.Text ~= "Stop Making Honey" and game.Players.LocalPlayer.PlayerGui.ScreenGui.ActivateButton.BackgroundColor3 ~= Color3.new(201, 39, 28) or (game:GetService("Players").LocalPlayer.SpawnPos.Value.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude > 10 then
             api.tween(1, game:GetService("Players").LocalPlayer.SpawnPos.Value * CFrame.fromEulerAnglesXYZ(0, 110, 0) + Vector3.new(0, 0, 9))
             task.wait(.9)
@@ -766,7 +766,7 @@ changelog:CreateLabel("+ Auto Demon Mask")
 local farmo = farmtab:CreateSection("Farming")
 local fielddropdown = farmo:CreateDropdown("Field", fieldstable, function(String) kocmoc.vars.field = String end) fielddropdown:SetOption(fieldstable[1])
 convertatslider = farmo:CreateSlider("Convert At", 0, 100, 100, false, function(Value) kocmoc.vars.convertat = Value end)
-farmo:CreateToggle("Don't Convert Pollen", nil, function(State) kocmoc.toggles.convertpollen = State end)
+farmo:CreateToggle("Don't Convert Pollen", nil, function(State) kocmoc.toggles.noconvertpollen = State end)
 local autofarmtoggle = farmo:CreateToggle("Autofarm ⚙", nil, function(State) kocmoc.toggles.autofarm = State end) autofarmtoggle:CreateKeybind("U", function(Key) end)
 farmo:CreateToggle("Autodig", nil, function(State) kocmoc.toggles.autodig = State end)
 farmo:CreateToggle("Auto Sprinkler", nil, function(State) kocmoc.toggles.autosprinkler = State end)
@@ -1088,20 +1088,20 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.glitter then itemtimers('glitter') end
                 if kocmoc.toggles.tropicaldrink then itemtimers('tropicaldrink') end
             end
-        elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion then
+        elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
             temptable.tokensfarm = false
             api.tween(2, game:GetService("Players").LocalPlayer.SpawnPos.Value * CFrame.fromEulerAnglesXYZ(0, 110, 0) + Vector3.new(0, 0, 9))
             task.wait(2)
             temptable.converting = true
             repeat
                 converthoney()
-            until game.Players.LocalPlayer.CoreStats.Pollen.Value == 0 or kocmoc.toggles.convertpollen
+            until game.Players.LocalPlayer.CoreStats.Pollen.Value == 0 or kocmoc.toggles.noconvertpollen
             if kocmoc.toggles.convertballoons and gethiveballoon() then
                 task.wait(6)
                 repeat
                     task.wait()
                     converthoney()
-                until gethiveballoon() == false or not kocmoc.toggles.convertballoons or kocmoc.toggles.convertpollen
+                until gethiveballoon() == false or not kocmoc.toggles.convertballoons or kocmoc.toggles.noconvertpollen
             end
             temptable.converting = false
             temptable.act = temptable.act + 1
