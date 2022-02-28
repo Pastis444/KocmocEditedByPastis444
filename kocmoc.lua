@@ -262,7 +262,8 @@ local kocmoc = {
         glue = false,
         glitter = false,
         enzyme = false,
-        tropicaldrink = false
+        tropicaldrink = false,
+        snowflake = false
     },
     vars = {
         field = "Ant Field",
@@ -299,6 +300,7 @@ local buffTable = {
     "Glue";
     "Glitter";
     "Tropical Drink";
+    "Snowflake";
 }
 
 local buffs = {
@@ -309,7 +311,8 @@ local buffs = {
         enzyme = 0,
         glue = 0,
         glitter = 0,
-        tropicaldrink = 0
+        tropicaldrink = 0,
+        snowflake = 0
     },
     name = {
         blueextract = "Blue Extract",
@@ -318,7 +321,8 @@ local buffs = {
         enzyme = "Enzymes",
         glue = "Glue",
         glitter = "Glitter",
-        tropicaldrink = "Tropical Drink"
+        tropicaldrink = "Tropical Drink",
+        snowflake = "Snowflake"
     }
 }
 
@@ -334,6 +338,15 @@ function itemtimers(item)
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
         else
             if buffs.timers[item] - os.time() >= 910 then
+                game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
+            end
+        end
+    elseif item == "snowflake" then
+        if buffs.timers[item] == 0 then 
+            buffs.timers[item] = os.time()
+            game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
+        else
+            if buffs.timers[item] - os.time() >= 10 then
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             end
         end
@@ -857,6 +870,7 @@ itemt:CreateToggle("Use Enzyme", nil, function(State) kocmoc.toggles.enzyme = St
 itemt:CreateToggle("Use Glue", nil, function(State) kocmoc.toggles.glue = State end)
 itemt:CreateToggle("Use Glitter", nil, function(State) kocmoc.toggles.glitter = State end)
 itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
+itemt:CreateToggle("Use Snowflake", nil, function(State) kocmoc.toggles.snowflake = State end)
 
 
 local miscc = misctab:CreateSection("Misc")
@@ -1116,6 +1130,7 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.glue then itemtimers('glue') end
                 if kocmoc.toggles.glitter then itemtimers('glitter') end
                 if kocmoc.toggles.tropicaldrink then itemtimers('tropicaldrink') end
+                if kocmoc.toggles.snowflake then itemtimers('snowflake') end
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
             temptable.tokensfarm = false
@@ -1234,8 +1249,8 @@ task.spawn(function() while task.wait(0.1) do
     if kocmoc.toggles.oil then itemtimers('oil') end
     if kocmoc.toggles.enzyme then itemtimers('enzyme') end
     if kocmoc.toggles.glue then itemtimers('glue') end
-    if kocmoc.toggles.glitter then itemtimers('glitter') end
     if kocmoc.toggles.tropicaldrink then itemtimers('tropicaldrink') end
+    if kocmoc.toggles.snowflake then itemtimers('snowflake') end
 end end)
 
 task.spawn(function() while task.wait(0.001) do
