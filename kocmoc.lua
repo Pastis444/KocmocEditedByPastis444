@@ -22,7 +22,7 @@ function oldmasks() local tab = game.ReplicatedStorage.Events.RetrievePlayerStat
 -- Script tables
 
 local temptable = {
-    version = "2.17.0",
+    version = "2.18.0",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -103,6 +103,7 @@ local temptable = {
     crosshair = false,
     coconut = false,
     act = 0,
+    popstar = 0,
     ['touchedfunction'] = function(v)
         if lasttouched ~= v then
             if v.Parent.Name == "FlowerZones" then
@@ -206,6 +207,7 @@ local kocmoc = {
     toggles = {
         noconvertpollen = false,
         autofarm = false,
+        popstarconvert = false,
         farmclosestleaf = false,
         farmbubbles = false,
         autodig = false,
@@ -275,6 +277,7 @@ local kocmoc = {
         npcprefer = "All Quests",
         farmtype = "Walk",
         monstertimer = 3,
+        popstartimer = 3,
         Keybind = Enum.KeyCode.Semicolon
     },
     dispensesettings = {
@@ -327,42 +330,43 @@ local buffs = {
 }
 
 local extrasvars = {
-    demoncounter = 0
+    demoncounter = 0,
+    popstarmustconvert = false,
+    timers = {
+        popstar = 0
+    }
 }
 -- functions
 
 function itemtimers(item)
     if item == "glitter" then
-        if buffs.timers[item] == 0 then 
-            buffs.timers[item] = os.time()
+        if os.time() - buffs.timers[item] >= 910 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
-        else
-            if os.time() - buffs.timers[item] >= 910 then
-                game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
-                buffs.timers[item] = os.time()
-            end
+            buffs.timers[item] = os.time()
         end
     elseif item == "snowflake" then
-        if buffs.timers[item] == 0 then 
-            buffs.timers[item] = os.time()
+        if os.time() - buffs.timers[item] >= 10 then
+            print("SNOWFLAKE Used")
             print("SNOWFLAKE Timers : ", buffs.timers[item])
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
-        else
-            if os.time() - buffs.timers[item] >= 10 then
-                print("SNOWFLAKE Used")
-                print("SNOWFLAKE Timers : ", buffs.timers[item])
-                game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
-                buffs.timers[item] = os.time()
-            end
+            buffs.timers[item] = os.time()
         end
     else
-        if buffs.timers[item] == 0 then 
-            buffs.timers[item] = os.time()
+        if os.time() - buffs.timers[item] >= 600 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
-        else
-            if os.time() - buffs.timers[item] >= 600 then
-                game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
-                buffs.timers[item] = os.time()
+            buffs.timers[item] = os.time()
+        end
+    end
+end
+
+function popstarcounter()
+    if rtsg()['Abilities']['Pop Star']['OnCooldown'] then 
+        if os.time() - extrasvars.timers.popstar >= 60 then
+            extrasvars.timers.popstar = os.time()
+            temptable.popstar = temptable.popstar + 1
+            if temptable.popstar >= kocmoc.vars.popstartimer then
+                temptable.popstar = 0
+                extrasvars.popstarmustconvert = true
             end
         end
     end
@@ -795,10 +799,8 @@ information:CreateLabel("Script by weuz_ and mrdevl")
 information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
 local changelog = hometab:CreateSection("Changelog")
-changelog:CreateLabel("+ Auto Ant on Quest")
-changelog:CreateLabel("+ Auto Donate Cloud Vial")
-changelog:CreateLabel("+ Items Tab")
-changelog:CreateLabel("+ Auto Demon Mask")
+changelog:CreateLabel("+ Auto Convert Pollen After x Pop Star")
+changelog:CreateLabel("- Auto Use Glitter")
 --information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
 --information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
 
@@ -808,6 +810,7 @@ local fielddropdown = farmo:CreateDropdown("Field", fieldstable, function(String
 convertatslider = farmo:CreateSlider("Convert At", 0, 100, 100, false, function(Value) kocmoc.vars.convertat = Value end)
 farmo:CreateToggle("Don't Convert Pollen", nil, function(State) kocmoc.toggles.noconvertpollen = State end)
 local autofarmtoggle = farmo:CreateToggle("Autofarm ⚙", nil, function(State) kocmoc.toggles.autofarm = State end) autofarmtoggle:CreateKeybind("U", function(Key) end)
+farmo:CreateToggle("Convert After x Pop Star ⚙", nil, function(State) kocmoc.toggles.popstarconvert = State end):AddToolTip("Default x=3; You can change it in the Settings Tab")
 farmo:CreateToggle("Autodig", nil, function(State) kocmoc.toggles.autodig = State end)
 farmo:CreateToggle("Auto Sprinkler", nil, function(State) kocmoc.toggles.autosprinkler = State end)
 farmo:CreateToggle("Farm Bubbles", nil, function(State) kocmoc.toggles.farmbubbles = State end)
@@ -874,7 +877,7 @@ itemt:CreateToggle("Use Red Extract", nil, function(State) kocmoc.toggles.redext
 itemt:CreateToggle("Use Oil", nil, function(State) kocmoc.toggles.oil = State end)
 itemt:CreateToggle("Use Enzyme", nil, function(State) kocmoc.toggles.enzyme = State end)
 itemt:CreateToggle("Use Glue", nil, function(State) kocmoc.toggles.glue = State end)
-itemt:CreateToggle("Use Glitter", nil, function(State) kocmoc.toggles.glitter = State end)
+--itemt:CreateToggle("Use Glitter", nil, function(State) kocmoc.toggles.glitter = State end)
 itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
 itemt:CreateToggle("Use Snowflake", nil, function(State) kocmoc.toggles.snowflake = State end)
 
@@ -911,6 +914,7 @@ farmsettings:CreateToggle("Don't Walk In Field",nil, function(State) kocmoc.togg
 farmsettings:CreateToggle("Convert Hive Balloon",nil, function(State) kocmoc.toggles.convertballoons = State end)
 farmsettings:CreateToggle("Don't Farm Tokens",nil, function(State) kocmoc.toggles.donotfarmtokens = State end)
 farmsettings:CreateToggle("Enable Token Blacklisting",nil, function(State) kocmoc.toggles.enabletokenblacklisting = State end)
+farmsettings:CreateTextBox('Convert Pollen After x Pop Star', 'default = 3', true, function(Value) kocmoc.vars.popstartimer = tonumber(Value) end)
 farmsettings:CreateSlider("Walk Speed", 0, 120, 70, false, function(Value) kocmoc.vars.walkspeed = Value end)
 farmsettings:CreateSlider("Jump Power", 0, 120, 70, false, function(Value) kocmoc.vars.jumppower = Value end)
 local raresettings = setttab:CreateSection("Tokens Settings")
@@ -1076,7 +1080,7 @@ task.spawn(function() while task.wait() do
                 fieldposition = fieldpos.Position
             end
         end
-        if tonumber(pollenpercentage) < tonumber(kocmoc.vars.convertat) or kocmoc.toggles.noconvertpollen then
+        if tonumber(pollenpercentage) < tonumber(kocmoc.vars.convertat) or kocmoc.toggles.noconvertpollen or extrasvars.popstarmustconvert then
             if not temptable.tokensfarm then
                 api.tween(2, fieldpos)
                 task.wait(2)
@@ -1257,6 +1261,7 @@ task.spawn(function() while task.wait() do
     if kocmoc.toggles.glue then itemtimers('glue') end
     if kocmoc.toggles.tropicaldrink then itemtimers('tropicaldrink') end
     if kocmoc.toggles.snowflake then itemtimers('snowflake') end
+    if kocmoc.toggles.popstarconvert then popstarcounter() end
 end end)
 
 task.spawn(function() while task.wait(0.001) do
