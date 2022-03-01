@@ -277,7 +277,6 @@ local kocmoc = {
         npcprefer = "All Quests",
         farmtype = "Walk",
         monstertimer = 3,
-        popstartimer = 3,
         Keybind = Enum.KeyCode.Semicolon
     },
     dispensesettings = {
@@ -332,6 +331,7 @@ local buffs = {
 local extrasvars = {
     demoncounter = 0,
     popstarmustconvert = false,
+    popstartimer = 3,
     timers = {
         popstar = 0
     }
@@ -364,7 +364,7 @@ function popstarcounter()
         if os.time() - extrasvars.timers.popstar >= 60 then
             extrasvars.timers.popstar = os.time()
             temptable.popstar = temptable.popstar + 1
-            if temptable.popstar >= kocmoc.vars.popstartimer then
+            if temptable.popstar >= extrasvars.popstartimer then
                 temptable.popstar = 0
                 extrasvars.popstarmustconvert = true
             end
@@ -914,7 +914,7 @@ farmsettings:CreateToggle("Don't Walk In Field",nil, function(State) kocmoc.togg
 farmsettings:CreateToggle("Convert Hive Balloon",nil, function(State) kocmoc.toggles.convertballoons = State end)
 farmsettings:CreateToggle("Don't Farm Tokens",nil, function(State) kocmoc.toggles.donotfarmtokens = State end)
 farmsettings:CreateToggle("Enable Token Blacklisting",nil, function(State) kocmoc.toggles.enabletokenblacklisting = State end)
-farmsettings:CreateTextBox('Convert Pollen After x Pop Star', 'default = 3', true, function(Value) kocmoc.vars.popstartimer = tonumber(Value) end)
+farmsettings:CreateTextBox('Convert Pollen After x Pop Star', 'default = 3', true, function(Value) extrasvars.popstartimer = tonumber(Value) end)
 farmsettings:CreateSlider("Walk Speed", 0, 120, 70, false, function(Value) kocmoc.vars.walkspeed = Value end)
 farmsettings:CreateSlider("Jump Power", 0, 120, 70, false, function(Value) kocmoc.vars.jumppower = Value end)
 local raresettings = setttab:CreateSection("Tokens Settings")
