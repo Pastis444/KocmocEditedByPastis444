@@ -1148,6 +1148,11 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.popstarconvert then popstarcounter() end
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
+            if extrasvars.demoncounter == 0 then
+                temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
+            end 
+            extrasvars.demoncounter = extrasvars.demoncounter + 1 
+            maskequip('Honey Mask')
             temptable.tokensfarm = false
             api.tween(2, game:GetService("Players").LocalPlayer.SpawnPos.Value * CFrame.fromEulerAnglesXYZ(0, 110, 0) + Vector3.new(0, 0, 9))
             task.wait(2)
@@ -1164,6 +1169,10 @@ task.spawn(function() while task.wait() do
             end
             temptable.converting = false
             temptable.act = temptable.act + 1
+            if kocmoc.toggles.demonmask then 
+                extrasvars.demoncounter = extrasvars.demoncounter - 1
+            end 
+            maskequip(temptable.oldequippedmask)
             temptable.popstar = 0
             extrasvars.popstarmustconvert = false
             task.wait(6)
