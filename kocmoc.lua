@@ -22,7 +22,7 @@ function oldmasks() local tab = game.ReplicatedStorage.Events.RetrievePlayerStat
 -- Script tables
 
 local temptable = {
-    version = "2.18.0",
+    version = "2.18.1",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -332,6 +332,7 @@ local extrasvars = {
     demoncounter = 0,
     popstarmustconvert = false,
     popstartimer = 3,
+    planterat = 100,
     timers = {
         popstar = 0
     }
@@ -360,12 +361,15 @@ function itemtimers(item)
 end
 
 function popstarcounter()
-    if rtsg()['Abilities']['Pop Star']['OnCooldown'] then 
-        if os.time() - extrasvars.timers.popstar >= 60 then
+    if extrasvars.timers.popstar == 0 then extrasvars.timers.popstar = os.time() end
+    if os.time() - extrasvars.timers.popstar >= 60 then
+        print('Pop Timers checked : ', os.time() - extrasvars.timers.popstar)
+        if not rtsg()['Abilities']['Pop Star']['OnCooldown'] then 
+            print('Pop Star OnCooldown :', rtsg()['Abilities']['Pop Star']['OnCooldown'])
             extrasvars.timers.popstar = os.time()
             temptable.popstar = temptable.popstar + 1
             if temptable.popstar >= extrasvars.popstartimer then
-                temptable.popstar = 0
+                print('All the conditions have been checked, error is somewhere else :', temptable.popstar >= extrasvars.popstartimer)
                 extrasvars.popstarmustconvert = true
             end
         end
@@ -524,7 +528,7 @@ function getplanters()
     table.clear(planterst.plantername)
     table.clear(planterst.planterid)
     for i,v in pairs(debug.getupvalues(require(game:GetService("ReplicatedStorage").LocalPlanters).LoadPlanter)[4]) do 
-        if v.GrowthPercent == 1 and v.IsMine then
+        if v.GrowthPercent >= (extrasvars.planterat/100) and v.IsMine then
             table.insert(planterst.plantername, v.Type)
             table.insert(planterst.planterid, v.ActorID)
         end
@@ -799,8 +803,7 @@ information:CreateLabel("Script by weuz_ and mrdevl")
 information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
 local changelog = hometab:CreateSection("Changelog")
-changelog:CreateLabel("+ Auto Convert Pollen After x Pop Star")
-changelog:CreateLabel("- Auto Use Glitter")
+changelog:CreateLabel("+ Beesmas quest npc to npc quest in settings")
 --information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
 --information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
 
@@ -810,7 +813,7 @@ local fielddropdown = farmo:CreateDropdown("Field", fieldstable, function(String
 convertatslider = farmo:CreateSlider("Convert At", 0, 100, 100, false, function(Value) kocmoc.vars.convertat = Value end)
 farmo:CreateToggle("Don't Convert Pollen", nil, function(State) kocmoc.toggles.noconvertpollen = State end)
 local autofarmtoggle = farmo:CreateToggle("Autofarm ⚙", nil, function(State) kocmoc.toggles.autofarm = State end) autofarmtoggle:CreateKeybind("U", function(Key) end)
-farmo:CreateToggle("Convert After x Pop Star ⚙", nil, function(State) kocmoc.toggles.popstarconvert = State end):AddToolTip("Default x=3; You can change it in the Settings Tab")
+--farmo:CreateToggle("Convert After x Pop Star ⚙", nil, function(State) kocmoc.toggles.popstarconvert = State end):AddToolTip("Default x=3; You can change it in the Settings Tab")
 farmo:CreateToggle("Autodig", nil, function(State) kocmoc.toggles.autodig = State end)
 farmo:CreateToggle("Auto Sprinkler", nil, function(State) kocmoc.toggles.autosprinkler = State end)
 farmo:CreateToggle("Farm Bubbles", nil, function(State) kocmoc.toggles.farmbubbles = State end)
@@ -829,7 +832,7 @@ farmt:CreateToggle("Auto Wealth Clock", nil, function(State) kocmoc.toggles.cloc
 farmt:CreateToggle("Auto Gingerbread Bears", nil, function(State) kocmoc.toggles.collectgingerbreads = State end)
 farmt:CreateToggle("Auto Samovar", nil, function(State) kocmoc.toggles.autosamovar = State end)
 farmt:CreateToggle("Auto Stockings", nil, function(State) kocmoc.toggles.autostockings = State end)
-farmt:CreateToggle("Auto Planters", nil, function(State) kocmoc.toggles.autoplanters = State end):AddToolTip("Will re-plant your planters after converting, if they hit 100%")
+farmt:CreateToggle("Auto Planters", nil, function(State) kocmoc.toggles.autoplanters = State end):AddToolTip("Will re-plant your planters after converting, if they hit x%")
 farmt:CreateToggle("Auto Honey Candles", nil, function(State) kocmoc.toggles.autocandles = State end)
 farmt:CreateToggle("Auto Beesmas Feast", nil, function(State) kocmoc.toggles.autofeast = State end)
 farmt:CreateToggle("Auto Onett's Lid Art", nil, function(State) kocmoc.toggles.autoonettart = State end)
@@ -914,7 +917,8 @@ farmsettings:CreateToggle("Don't Walk In Field",nil, function(State) kocmoc.togg
 farmsettings:CreateToggle("Convert Hive Balloon",nil, function(State) kocmoc.toggles.convertballoons = State end)
 farmsettings:CreateToggle("Don't Farm Tokens",nil, function(State) kocmoc.toggles.donotfarmtokens = State end)
 farmsettings:CreateToggle("Enable Token Blacklisting",nil, function(State) kocmoc.toggles.enabletokenblacklisting = State end)
-farmsettings:CreateTextBox('Convert Pollen After x Pop Star', 'default = 3', true, function(Value) extrasvars.popstartimer = tonumber(Value) end)
+--farmsettings:CreateTextBox('Convert Pollen After x Pop Star', 'default = 3', true, function(Value) extrasvars.popstartimer = tonumber(Value) end)
+farmsettings:CreateSlider("Collect Planters At", 0, 100, 100, false, function(Value) extrasvars.planterat = Value end)
 farmsettings:CreateSlider("Walk Speed", 0, 120, 70, false, function(Value) kocmoc.vars.walkspeed = Value end)
 farmsettings:CreateSlider("Jump Power", 0, 120, 70, false, function(Value) kocmoc.vars.jumppower = Value end)
 local raresettings = setttab:CreateSection("Tokens Settings")
@@ -969,7 +973,7 @@ fieldsettings:CreateButton("Add Field To Blacklist", function() table.insert(koc
 fieldsettings:CreateButton("Remove Field From Blacklist", function() table.remove(kocmoc.blacklistedfields, api.tablefind(kocmoc.blacklistedfields, temptable.blackfield)) game:GetService("CoreGui"):FindFirstChild(_G.windowname).Main:FindFirstChild("Blacklisted Fields D",true):Destroy() fieldsettings:CreateDropdown("Blacklisted Fields", kocmoc.blacklistedfields, function(Option) end) end)
 fieldsettings:CreateDropdown("Blacklisted Fields", kocmoc.blacklistedfields, function(Option) end)
 local aqs = setttab:CreateSection("Auto Quest Settings")
-aqs:CreateDropdown("Do NPC Quests", {'All Quests', 'Bucko Bee', 'Brown Bear', 'Riley Bee', 'Polar Bear'}, function(Option) kocmoc.vars.npcprefer = Option end)
+aqs:CreateDropdown("Do NPC Quests", {'All Quests', 'Bucko Bee', 'Brown Bear', 'Riley Bee', 'Polar Bear', 'Bee Bear (X-Mas Bear)'}, function(Option) if Option == 'Bee Bear (X-Mas Bear)' then kocmoc.vars.npcprefer = 'Snow Cub Reformation' else kocmoc.vars.npcprefer = Option end end)
 aqs:CreateToggle("Teleport To NPC", nil, function(State) kocmoc.toggles.tptonpc = State end)
 local pts = setttab:CreateSection("Autofarm Priority Tokens")
 pts:CreateTextBox("Asset ID", 'rbxassetid', false, function(Value) rarename = Value end)
@@ -1020,7 +1024,7 @@ task.spawn(function() while task.wait() do
         if kocmoc.toggles.autodoquest and game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menus.Children.Quests.Content:FindFirstChild("Frame") then
             for i,v in next, game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Menus.Children.Quests:GetDescendants() do
                 if v.Name == "Description" then
-                    if string.match(v.Parent.Parent.TitleBar.Text, kocmoc.vars.npcprefer) or kocmoc.vars.npcprefer == "All Quests" and not string.find(v.Text, "Puffshroom") then
+                    if string.match(v.Parent.Parent.TitleBar.Text, kocmoc.vars.npcprefer) or kocmoc.vars.npcprefer == "All Quests" and not string.find(v.Text, "Puffshroom") and not string.find(v.Text, "Planters") then
                         pollentypes = {'White Pollen', "Red Pollen", "Blue Pollen", "Blue Flowers", "Red Flowers", "White Flowers"}
                         text = v.Text
                         if api.returnvalue(fieldstable, text) and not string.find(v.Text, "Complete!") and not api.findvalue(kocmoc.blacklistedfields, api.returnvalue(fieldstable, text)) then
@@ -1080,7 +1084,7 @@ task.spawn(function() while task.wait() do
                 fieldposition = fieldpos.Position
             end
         end
-        if tonumber(pollenpercentage) < tonumber(kocmoc.vars.convertat) or kocmoc.toggles.noconvertpollen or extrasvars.popstarmustconvert then
+        if tonumber(pollenpercentage) < tonumber(kocmoc.vars.convertat) or kocmoc.toggles.noconvertpollen then
             if not temptable.tokensfarm then
                 api.tween(2, fieldpos)
                 task.wait(2)
@@ -1141,6 +1145,7 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.glitter then itemtimers('glitter') end
                 if kocmoc.toggles.tropicaldrink then itemtimers('tropicaldrink') end
                 if kocmoc.toggles.snowflake then itemtimers('snowflake') end
+                if kocmoc.toggles.popstarconvert then popstarcounter() end
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
             temptable.tokensfarm = false
@@ -1159,6 +1164,42 @@ task.spawn(function() while task.wait() do
             end
             temptable.converting = false
             temptable.act = temptable.act + 1
+            temptable.popstar = 0
+            extrasvars.popstarmustconvert = false
+            task.wait(6)
+            if kocmoc.toggles.autoant and not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
+                if temptable.act >= kocmoc.vars.monstertimer then farmant() end 
+            end
+            if kocmoc.toggles.autoquest then makequests() end
+            if kocmoc.toggles.autoplanters then collectplanters() end
+            if kocmoc.toggles.autokillmobs then 
+                if temptable.act >= kocmoc.vars.monstertimer then
+                    temptable.started.monsters = true
+                    temptable.act = 0
+                    killmobs() 
+                    temptable.started.monsters = false
+                end
+            end
+        elseif extrasvars.popstarmustconvert then
+            print('Converting :', extrasvars.popstarmustconvert)
+            temptable.tokensfarm = false
+            api.tween(2, game:GetService("Players").LocalPlayer.SpawnPos.Value * CFrame.fromEulerAnglesXYZ(0, 110, 0) + Vector3.new(0, 0, 9))
+            task.wait(2)
+            temptable.converting = true
+            repeat
+                converthoney()
+            until game.Players.LocalPlayer.CoreStats.Pollen.Value == 0 or kocmoc.toggles.noconvertpollen
+            if kocmoc.toggles.convertballoons and gethiveballoon() then
+                task.wait(6)
+                repeat
+                    task.wait()
+                    converthoney()
+                until gethiveballoon() == false or not kocmoc.toggles.convertballoons or kocmoc.toggles.noconvertpollen
+            end
+            temptable.converting = false
+            temptable.act = temptable.act + 1
+            temptable.popstar = 0
+            extrasvars.popstarmustconvert = false
             task.wait(6)
             if kocmoc.toggles.autoant and not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
                 if temptable.act >= kocmoc.vars.monstertimer then farmant() end 
@@ -1253,7 +1294,7 @@ task.spawn(function() while task.wait() do
     end
 end end)
 
-task.spawn(function() while task.wait() do
+task.spawn(function() while task.wait(0.5) do
     if kocmoc.toggles.blueextract then itemtimers('blueextract') end
     if kocmoc.toggles.redextract then itemtimers('redextract') end
     if kocmoc.toggles.oil then itemtimers('oil') end
