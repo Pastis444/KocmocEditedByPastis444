@@ -333,6 +333,7 @@ local extrasvars = {
     popstarmustconvert = false,
     popstartimer = 3,
     planterat = 100,
+    field = "Sunflower Field",
     timers = {
         popstar = 0
     }
@@ -342,6 +343,11 @@ local extrasvars = {
 function itemtimers(item)
     if item == "glitter" then
         if os.time() - buffs.timers[item] >= 910 then
+            fieldselected = game:GetService("Workspace").FlowerZones[extrasvars.field]
+            fieldpos = CFrame.new(fieldselected.Position.X, fieldselected.Position.Y+3, fieldselected.Position.Z)
+            fieldposition = fieldselected.Position
+            api.tween(2, fieldpos)
+            task.wait(2)
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             buffs.timers[item] = os.time()
         end
@@ -880,7 +886,8 @@ itemt:CreateToggle("Use Red Extract", nil, function(State) kocmoc.toggles.redext
 itemt:CreateToggle("Use Oil", nil, function(State) kocmoc.toggles.oil = State end)
 itemt:CreateToggle("Use Enzyme", nil, function(State) kocmoc.toggles.enzyme = State end)
 itemt:CreateToggle("Use Glue", nil, function(State) kocmoc.toggles.glue = State end)
---itemt:CreateToggle("Use Glitter", nil, function(State) kocmoc.toggles.glitter = State end)
+itemt:CreateToggle("Use Glitter", nil, function(State) kocmoc.toggles.glitter = State end)
+local glitterdropdown = itemt:CreateDropdown("Field", fieldstable, function(String) extrasvars.field = String end) glitterdropdown:SetOption(fieldstable[1])
 itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
 itemt:CreateToggle("Use Snowflake", nil, function(State) kocmoc.toggles.snowflake = State end)
 
@@ -1137,14 +1144,6 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.farmunderballoons then getballoons() end
                 if not kocmoc.toggles.donotfarmtokens and done then gettoken() end
                 if not kocmoc.toggles.farmflower then getflower() end
-                if kocmoc.toggles.blueextract then itemtimers('blueextract') end
-                if kocmoc.toggles.redextract then itemtimers('redextract') end
-                if kocmoc.toggles.oil then itemtimers('oil') end
-                if kocmoc.toggles.enzyme then itemtimers('enzyme') end
-                if kocmoc.toggles.glue then itemtimers('glue') end
-                if kocmoc.toggles.glitter then itemtimers('glitter') end
-                if kocmoc.toggles.tropicaldrink then itemtimers('tropicaldrink') end
-                if kocmoc.toggles.snowflake then itemtimers('snowflake') end
                 if kocmoc.toggles.popstarconvert then popstarcounter() end
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
