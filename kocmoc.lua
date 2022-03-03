@@ -888,7 +888,7 @@ itemt:CreateToggle("Use Oil", nil, function(State) kocmoc.toggles.oil = State en
 itemt:CreateToggle("Use Enzyme", nil, function(State) kocmoc.toggles.enzyme = State end)
 itemt:CreateToggle("Use Glue", nil, function(State) kocmoc.toggles.glue = State end)
 itemt:CreateToggle("Use Glitter", nil, function(State) kocmoc.toggles.glitter = State end)
-local glitterdropdown = itemt:CreateDropdown("Field", fieldstable, function(String) extrasvars.field = String end) glitterdropdown:SetOption(fieldstable[1])
+local glitterdropdown = itemt:CreateDropdown("Field for Glitter", fieldstable, function(String) extrasvars.field = String end) glitterdropdown:SetOption(fieldstable[2])
 itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
 itemt:CreateToggle("Use Snowflake", nil, function(State) kocmoc.toggles.snowflake = State end)
 
