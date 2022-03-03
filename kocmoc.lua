@@ -1310,6 +1310,7 @@ task.spawn(function() while task.wait(0.5) do
     if kocmoc.toggles.glue then itemtimers('glue') end
     if kocmoc.toggles.tropicaldrink then itemtimers('tropicaldrink') end
     if kocmoc.toggles.snowflake then itemtimers('snowflake') end
+    if kocmoc.toggles.glitter then itemtimers('glitter') end
     if kocmoc.toggles.popstarconvert then popstarcounter() end
 end end)
 
