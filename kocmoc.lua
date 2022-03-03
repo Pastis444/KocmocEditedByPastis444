@@ -342,6 +342,7 @@ local extrasvars = {
 
 function itemtimers(item)
     if item == "glitter" then
+        glittercounter = rtsg()['Totals']['EggUses']['Glitter']
         if os.time() - buffs.timers[item] >= 910 then
             fieldselected = game:GetService("Workspace").FlowerZones[extrasvars.field]
             fieldpos = CFrame.new(fieldselected.Position.X, fieldselected.Position.Y+3, fieldselected.Position.Z)
@@ -349,7 +350,7 @@ function itemtimers(item)
             api.tween(2, fieldpos)
             task.wait(2)
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
-            buffs.timers[item] = os.time()
+            if glittercounter < rtsg()['Totals']['EggUses']['Glitter'] then buffs.timers[item] = os.time() end
         end
     elseif item == "snowflake" then
         if os.time() - buffs.timers[item] >= 10 then
