@@ -394,7 +394,7 @@ function itemtimers(item)
         end
     elseif item == "fielddice" then
         if not kocmoc.toggles.glitter then
-            if os.time() - buffs.timers.[item] >= 900 then
+            if os.time() - buffs.timers[item] >= 900 then
                 n = 0
                 keyset = {}
                 fielddicelanded = false
