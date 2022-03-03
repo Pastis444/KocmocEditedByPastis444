@@ -22,7 +22,7 @@ function oldmasks() local tab = game.ReplicatedStorage.Events.RetrievePlayerStat
 -- Script tables
 
 local temptable = {
-    version = "2.18.1",
+    version = "2.18.2",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -348,7 +348,6 @@ function itemtimers(item)
             fieldpos = CFrame.new(fieldselected.Position.X, fieldselected.Position.Y+3, fieldselected.Position.Z)
             fieldposition = fieldselected.Position
             api.tween(2, fieldpos)
-            task.wait(2)
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             if glittercounter < rtsg()['Totals']['EggUses']['Glitter'] then buffs.timers[item] = os.time() end
         end
@@ -810,7 +809,7 @@ information:CreateLabel("Script by weuz_ and mrdevl")
 information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
 local changelog = hometab:CreateSection("Changelog")
-changelog:CreateLabel("+ Beesmas quest npc to npc quest in settings")
+changelog:CreateLabel("+ Auto Use Glitter")
 --information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
 --information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
 
