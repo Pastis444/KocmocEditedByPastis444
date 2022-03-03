@@ -347,12 +347,14 @@ function itemtimers(item)
         if kocmoc.toggles.fielddice then
             glittercounter = rtsg()['Totals']['EggUses']['Glitter']
             if os.time() - buffs.timers[item] >= 1680 then
+                disableall()
                 fieldselected = game:GetService("Workspace").FlowerZones[extrasvars.field]
                 fieldpos = CFrame.new(fieldselected.Position.X, fieldselected.Position.Y+3, fieldselected.Position.Z)
                 fieldposition = fieldselected.Position
                 api.tween(2, fieldpos)
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
                 if glittercounter < rtsg()['Totals']['EggUses']['Glitter'] then buffs.timers[item] = os.time() end
+                enableall()
             elseif os.time() - buffs.timers[item] >= 840 then
                 enoughdice = rtsg()['Eggs']['FieldDice'] > 0
                 n = 0
