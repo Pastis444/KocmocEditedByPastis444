@@ -290,16 +290,6 @@ local kocmoc = {
         white = false,
         red = false,
         blue = false
-    },
-    extrasvars = {
-        demoncounter = 0,
-        popstarmustconvert = false,
-        popstartimer = 3,
-        planterat = 100,
-        field = "Sunflower Field",
-        timers = {
-            popstar = 0
-        }
     }
 }
 
@@ -340,7 +330,16 @@ local buffs = {
         snowflake = "Snowflake"
     }
 }
-
+local extrasvars = {
+    demoncounter = 0,
+    popstarmustconvert = false,
+    popstartimer = 3,
+    planterat = 100,
+    field = "Sunflower Field",
+    timers = {
+        popstar = 0
+    }
+}
 -- functions
 
 function itemtimers(item)
@@ -348,7 +347,7 @@ function itemtimers(item)
         if kocmoc.toggles.fielddice then
             glittercounter = rtsg()['Totals']['EggUses']['Glitter']
             if os.time() - buffs.timers[item] >= 1680 then
-                fieldselected = game:GetService("Workspace").FlowerZones[kocmoc.extrasvars.field]
+                fieldselected = game:GetService("Workspace").FlowerZones[extrasvars.field]
                 fieldpos = CFrame.new(fieldselected.Position.X, fieldselected.Position.Y+3, fieldselected.Position.Z)
                 fieldposition = fieldselected.Position
                 api.tween(2, fieldpos)
@@ -363,28 +362,28 @@ function itemtimers(item)
                 for i,v in pairs(rtsg()['Modifiers']['PollenBonus']) do
                     n=n+1
                     keyset[n]=i
-                    if string.match(keyset[n], 'Zone:'..kocmoc.extrasvars.field) then boostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Value']+0.5) tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Value']+0.5) end
+                    if string.match(keyset[n], 'Zone:'..extrasvars.field) then boostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Value']+0.5) tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Value']+0.5) end
                 end
                 if boostlvl ~= 0 and boostlvl ~= 4 then
                     repeat
                         enoughdice = rtsg()['Eggs']['FieldDice'] > 0
                         game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
-                        tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
+                        tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
                         wait(1)
                     until tempboostlvl == boostlvl + 1 or not enoughdice
                 elseif boostlvl == 4 then
                     repeat
                         enoughdice = rtsg()['Eggs']['FieldDice'] > 0
                         game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
-                        tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
+                        tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
                         wait(1)
-                    until os.time() - math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Start']) <= 20 or not enoughdice
+                    until os.time() - math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Start']) <= 20 or not enoughdice
                 end
             end
         else 
             glittercounter = rtsg()['Totals']['EggUses']['Glitter']
             if os.time() - buffs.timers[item] >= 910 then
-                fieldselected = game:GetService("Workspace").FlowerZones[kocmoc.extrasvars.field]
+                fieldselected = game:GetService("Workspace").FlowerZones[extrasvars.field]
                 fieldpos = CFrame.new(fieldselected.Position.X, fieldselected.Position.Y+3, fieldselected.Position.Z)
                 fieldposition = fieldselected.Position
                 api.tween(2, fieldpos)
@@ -405,7 +404,7 @@ function itemtimers(item)
                     for i,v in pairs(rtsg()['Modifiers']['PollenBonus']) do
                         n=n+1
                         keyset[n]=i
-                        if string.match(keyset[n], 'Zone:'..kocmoc.extrasvars.field) then fielddicelanded = true end
+                        if string.match(keyset[n], 'Zone:'..extrasvars.field) then fielddicelanded = true end
                     end
                     wait(1)
                 until fielddicelanded or not enoughdice
@@ -428,16 +427,16 @@ function itemtimers(item)
 end
 
 function popstarcounter()
-    if kocmoc.extrasvars.timers.popstar == 0 then kocmoc.extrasvars.timers.popstar = os.time() end
-    if os.time() - kocmoc.extrasvars.timers.popstar >= 60 then
-        print('Pop Timers checked : ', os.time() - kocmoc.extrasvars.timers.popstar)
+    if extrasvars.timers.popstar == 0 then extrasvars.timers.popstar = os.time() end
+    if os.time() - extrasvars.timers.popstar >= 60 then
+        print('Pop Timers checked : ', os.time() - extrasvars.timers.popstar)
         if not rtsg()['Abilities']['Pop Star']['OnCooldown'] then 
             print('Pop Star OnCooldown :', rtsg()['Abilities']['Pop Star']['OnCooldown'])
-            kocmoc.extrasvars.timers.popstar = os.time()
+            extrasvars.timers.popstar = os.time()
             temptable.popstar = temptable.popstar + 1
-            if temptable.popstar >= kocmoc.extrasvars.popstartimer then
-                print('All the conditions have been checked, error is somewhere else :', temptable.popstar >= kocmoc.extrasvars.popstartimer)
-                kocmoc.extrasvars.popstarmustconvert = true
+            if temptable.popstar >= extrasvars.popstartimer then
+                print('All the conditions have been checked, error is somewhere else :', temptable.popstar >= extrasvars.popstartimer)
+                extrasvars.popstarmustconvert = true
             end
         end
     end
@@ -530,11 +529,11 @@ function killmobs()
     for i,v in pairs(game:GetService("Workspace").MonsterSpawners:GetChildren()) do
         if v:FindFirstChild("Territory") then
             if v.Name ~= "Commando Chick" and v.Name ~= "CoconutCrab" and v.Name ~= "StumpSnail" and v.Name ~= "TunnelBear" and v.Name ~= "King Beetle Cave" and not v.Name:match("CaveMonster") and not v:FindFirstChild("TimerLabel", true).Visible then
-                if kocmoc.extrasvars.demoncounter == 0 then
+                if extrasvars.demoncounter == 0 then
                     temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
                 end 
                 if kocmoc.toggles.demonmask then 
-                    kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter + 1 
+                    extrasvars.demoncounter = extrasvars.demoncounter + 1 
                     maskequip('Demon Mask')
                 end
                 if v.Name:match("Werewolf") then
@@ -548,9 +547,9 @@ function killmobs()
                 repeat api.humanoidrootpart().CFrame = monsterpart.CFrame avoidmob() task.wait(1) until v:FindFirstChild("TimerLabel", true).Visible
                 for i = 1, 4 do gettoken(monsterpart.Position) end
                 if kocmoc.toggles.demonmask then 
-                    kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter - 1
+                    extrasvars.demoncounter = extrasvars.demoncounter - 1
                 end 
-                if kocmoc.extrasvars.demoncounter == 0 then
+                if extrasvars.demoncounter == 0 then
                     maskequip(temptable.oldequippedmask)
                 end
             end
@@ -595,7 +594,7 @@ function getplanters()
     table.clear(planterst.plantername)
     table.clear(planterst.planterid)
     for i,v in pairs(debug.getupvalues(require(game:GetService("ReplicatedStorage").LocalPlanters).LoadPlanter)[4]) do 
-        if v.GrowthPercent >= (kocmoc.extrasvars.planterat/100) and v.IsMine then
+        if v.GrowthPercent >= (extrasvars.planterat/100) and v.IsMine then
             table.insert(planterst.plantername, v.Type)
             table.insert(planterst.planterid, v.ActorID)
         end
@@ -607,11 +606,11 @@ function farmant()
     temptable.started.ant = true
     anttable = {left = true, right = false}
     temptable.oldtool = rtsg()['EquippedCollector']
-    if kocmoc.extrasvars.demoncounter == 0 then
+    if extrasvars.demoncounter == 0 then
         temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
     end
     if kocmoc.toggles.demonmask then 
-        kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter + 1
+        extrasvars.demoncounter = extrasvars.demoncounter + 1
         maskequip('Demon Mask')
     end
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = "Spark Staff",["Category"] = "Collector"})
@@ -642,9 +641,9 @@ function farmant()
     task.wait(1)
     game.ReplicatedStorage.Events.ItemPackageEvent:InvokeServer("Equip",{["Mute"] = true,["Type"] = temptable.oldtool,["Category"] = "Collector"})
     if kocmoc.toggles.demonmask then 
-        kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter - 1 
+        extrasvars.demoncounter = extrasvars.demoncounter - 1 
     end
-    if kocmoc.extrasvars.demoncounter == 0 then
+    if extrasvars.demoncounter == 0 then
         maskequip(temptable.oldequippedmask)
     end
     temptable.started.ant = false
@@ -950,7 +949,7 @@ itemt:CreateToggle("Use Enzyme", nil, function(State) kocmoc.toggles.enzyme = St
 itemt:CreateToggle("Use Glue", nil, function(State) kocmoc.toggles.glue = State end)
 itemt:CreateToggle("Use Glitter", nil, function(State) kocmoc.toggles.glitter = State end)
 itemt:CreateToggle("Use Field Dice", nil, function(State) kocmoc.toggles.fielddice = State end):AddToolTip("WARNING : Can use a LOT of Field Dice (because it's RNG)")
-local glitterdropdown = itemt:CreateDropdown("Field for Glitter and Filed Dice", fieldstable, function(String) kocmoc.extrasvars.field = String end) glitterdropdown:SetOption(fieldstable[2])
+local glitterdropdown = itemt:CreateDropdown("Field for Glitter and Filed Dice", fieldstable, function(String) extrasvars.field = String end) glitterdropdown:SetOption(fieldstable[2])
 itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
 itemt:CreateToggle("Use Snowflake", nil, function(State) kocmoc.toggles.snowflake = State end)
 
@@ -987,8 +986,8 @@ farmsettings:CreateToggle("Don't Walk In Field",nil, function(State) kocmoc.togg
 farmsettings:CreateToggle("Convert Hive Balloon",nil, function(State) kocmoc.toggles.convertballoons = State end)
 farmsettings:CreateToggle("Don't Farm Tokens",nil, function(State) kocmoc.toggles.donotfarmtokens = State end)
 farmsettings:CreateToggle("Enable Token Blacklisting",nil, function(State) kocmoc.toggles.enabletokenblacklisting = State end)
---farmsettings:CreateTextBox('Convert Pollen After x Pop Star', 'default = 3', true, function(Value) kocmoc.extrasvars.popstartimer = tonumber(Value) end)
-farmsettings:CreateSlider("Collect Planters At", 0, 100, 100, false, function(Value) kocmoc.extrasvars.planterat = Value end)
+--farmsettings:CreateTextBox('Convert Pollen After x Pop Star', 'default = 3', true, function(Value) extrasvars.popstartimer = tonumber(Value) end)
+farmsettings:CreateSlider("Collect Planters At", 0, 100, 100, false, function(Value) extrasvars.planterat = Value end)
 farmsettings:CreateSlider("Walk Speed", 0, 120, 70, false, function(Value) kocmoc.vars.walkspeed = Value end)
 farmsettings:CreateSlider("Jump Power", 0, 120, 70, false, function(Value) kocmoc.vars.jumppower = Value end)
 local raresettings = setttab:CreateSection("Tokens Settings")
@@ -1164,11 +1163,11 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.killmondo then
                     while kocmoc.toggles.killmondo and game.Workspace.Monsters:FindFirstChild("Mondo Chick (Lvl 8)") and not temptable.started.vicious and not temptable.started.monsters do
                         temptable.started.mondo = true
-                        if kocmoc.extrasvars.demoncounter == 0 then
+                        if extrasvars.demoncounter == 0 then
                             temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
                         end
                         if kocmoc.toggles.demonmask then 
-                            kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter + 1 
+                            extrasvars.demoncounter = extrasvars.demoncounter + 1 
                             maskequip('Demon Mask')
                         end
                         while game.Workspace.Monsters:FindFirstChild("Mondo Chick (Lvl 8)") do
@@ -1186,9 +1185,9 @@ task.spawn(function() while task.wait() do
                         enableall() 
                         api.tween(2, fieldpos)
                         if kocmoc.toggles.demonmask then 
-                            kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter - 1
+                            extrasvars.demoncounter = extrasvars.demoncounter - 1
                         end
-                        if kocmoc.extrasvars.demoncounter == 0 then
+                        if extrasvars.demoncounter == 0 then
                             maskequip(temptable.oldequippedmask)
                         end
                         temptable.started.mondo = false
@@ -1210,10 +1209,10 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.popstarconvert then popstarcounter() end
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
-            if kocmoc.extrasvars.demoncounter == 0 then
+            if extrasvars.demoncounter == 0 then
                 temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
             end 
-            kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter + 1 
+            extrasvars.demoncounter = extrasvars.demoncounter + 1 
             maskequip('Honey Mask')
             temptable.tokensfarm = false
             api.tween(2, game:GetService("Players").LocalPlayer.SpawnPos.Value * CFrame.fromEulerAnglesXYZ(0, 110, 0) + Vector3.new(0, 0, 9))
@@ -1232,11 +1231,11 @@ task.spawn(function() while task.wait() do
             temptable.converting = false
             temptable.act = temptable.act + 1
             if kocmoc.toggles.demonmask then 
-                kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter - 1
+                extrasvars.demoncounter = extrasvars.demoncounter - 1
             end 
             maskequip(temptable.oldequippedmask)
             temptable.popstar = 0
-            kocmoc.extrasvars.popstarmustconvert = false
+            extrasvars.popstarmustconvert = false
             task.wait(6)
             if kocmoc.toggles.autoant and not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
                 if temptable.act >= kocmoc.vars.monstertimer then farmant() end 
@@ -1251,8 +1250,8 @@ task.spawn(function() while task.wait() do
                     temptable.started.monsters = false
                 end
             end
-        elseif kocmoc.extrasvars.popstarmustconvert then
-            print('Converting :', kocmoc.extrasvars.popstarmustconvert)
+        elseif extrasvars.popstarmustconvert then
+            print('Converting :', extrasvars.popstarmustconvert)
             temptable.tokensfarm = false
             api.tween(2, game:GetService("Players").LocalPlayer.SpawnPos.Value * CFrame.fromEulerAnglesXYZ(0, 110, 0) + Vector3.new(0, 0, 9))
             task.wait(2)
@@ -1270,7 +1269,7 @@ task.spawn(function() while task.wait() do
             temptable.converting = false
             temptable.act = temptable.act + 1
             temptable.popstar = 0
-            kocmoc.extrasvars.popstarmustconvert = false
+            extrasvars.popstarmustconvert = false
             task.wait(6)
             if kocmoc.toggles.autoant and not game:GetService("Workspace").Toys["Ant Challenge"].Busy.Value and rtsg().Eggs.AntPass > 0 then
                 if temptable.act >= kocmoc.vars.monstertimer then farmant() end 
@@ -1322,11 +1321,11 @@ end)
 task.spawn(function() while task.wait() do
     if kocmoc.toggles.killwindy and temptable.detected.windy and not temptable.converting and not temptable.started.vicious and not temptable.started.mondo and not temptable.started.monsters then
         temptable.started.windy = true
-        if kocmoc.extrasvars.demoncounter == 0 then
+        if extrasvars.demoncounter == 0 then
             temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
         end
         if kocmoc.toggles.demonmask then 
-            kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter + 1 
+            extrasvars.demoncounter = extrasvars.demoncounter + 1 
             maskequip('Demon Mask')
         end
         wlvl = "" aw = false awb = false -- some variable for autowindy, yk?
@@ -1356,9 +1355,9 @@ task.spawn(function() while task.wait() do
         enableall()
         temptable.float = false
         if kocmoc.toggles.demonmask then 
-            kocmoc.extrasvars.demoncounter = kocmoc.extrasvars.demoncounter - 1 
+            extrasvars.demoncounter = extrasvars.demoncounter - 1 
         end
-        if kocmoc.extrasvars.demoncounter == 0 then
+        if extrasvars.demoncounter == 0 then
             maskequip(temptable.oldequippedmask)
         end
         temptable.started.windy = false
