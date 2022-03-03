@@ -347,6 +347,42 @@ function itemtimers(item)
     if item == "glitter" then
         if kocmoc.toggles.fielddice then
             glittercounter = rtsg()['Totals']['EggUses']['Glitter']
+            if os.time() - buffs.timers[item] >= 1680 then
+                fieldselected = game:GetService("Workspace").FlowerZones[kocmoc.extrasvars.field]
+                fieldpos = CFrame.new(fieldselected.Position.X, fieldselected.Position.Y+3, fieldselected.Position.Z)
+                fieldposition = fieldselected.Position
+                api.tween(2, fieldpos)
+                game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
+                if glittercounter < rtsg()['Totals']['EggUses']['Glitter'] then buffs.timers[item] = os.time() end
+            elseif os.time() - buffs.timers[item] >= 840 then
+                enoughdice = rtsg()['Eggs']['FieldDice'] > 0
+                n = 0
+                keyset = {}
+                boostlvl = 0
+                tempboostlvl = 0
+                for i,v in pairs(rtsg()['Modifiers']['PollenBonus']) do
+                    n=n+1
+                    keyset[n]=i
+                    if string.match(keyset[n], 'Zone:'..kocmoc.extrasvars.field) then boostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Value']+0.5) tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Value']+0.5) end
+                end
+                if boostlvl ~= 0 and boostlvl ~= 4 then
+                    repeat
+                        enoughdice = rtsg()['Eggs']['FieldDice'] > 0
+                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
+                        tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
+                        wait(1)
+                    until tempboostlvl == boostlvl + 1 or not enoughdice
+                elseif boostlvl == 4 then
+                    repeat
+                        enoughdice = rtsg()['Eggs']['FieldDice'] > 0
+                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
+                        tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
+                        wait(1)
+                    until os.time() - math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. kocmoc.extrasvars.field .. ',']['Mods'][1]['Start']) <= 20 or not enoughdice
+                end
+            end
+        else 
+            glittercounter = rtsg()['Totals']['EggUses']['Glitter']
             if os.time() - buffs.timers[item] >= 910 then
                 fieldselected = game:GetService("Workspace").FlowerZones[kocmoc.extrasvars.field]
                 fieldpos = CFrame.new(fieldselected.Position.X, fieldselected.Position.Y+3, fieldselected.Position.Z)
@@ -354,6 +390,26 @@ function itemtimers(item)
                 api.tween(2, fieldpos)
                 game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
                 if glittercounter < rtsg()['Totals']['EggUses']['Glitter'] then buffs.timers[item] = os.time() end
+            end
+        end
+    elseif item == "fielddice" then
+        if not kocmoc.toggles.glitter then
+            if os.time() - buffs.timers.[item] >= 900 then
+                n = 0
+                keyset = {}
+                fielddicelanded = false
+                enoughdice = rtsg()['Eggs']['FieldDice'] > 0
+                repeat
+                    enoughdice = rtsg()['Eggs']['FieldDice'] > 0
+                    game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
+                    for i,v in pairs(rtsg()['Modifiers']['PollenBonus']) do
+                        n=n+1
+                        keyset[n]=i
+                        if string.match(keyset[n], 'Zone:'..kocmoc.extrasvars.field) then fielddicelanded = true end
+                    end
+                    wait(1)
+                until fielddicelanded or not enoughdice
+                buffs.timers[item] = os.time()
             end
         end
     elseif item == "snowflake" then
@@ -815,6 +871,7 @@ information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
 local changelog = hometab:CreateSection("Changelog")
 changelog:CreateLabel("+ Auto Use Glitter")
+changelog:CreateLabel("+ Auto Use Field Dice")
 --information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
 --information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
 
@@ -892,7 +949,7 @@ itemt:CreateToggle("Use Oil", nil, function(State) kocmoc.toggles.oil = State en
 itemt:CreateToggle("Use Enzyme", nil, function(State) kocmoc.toggles.enzyme = State end)
 itemt:CreateToggle("Use Glue", nil, function(State) kocmoc.toggles.glue = State end)
 itemt:CreateToggle("Use Glitter", nil, function(State) kocmoc.toggles.glitter = State end)
-itemt:CreateToggle("Use Field Dice", nil, function(State) kocmoc.toggles.fielddice = State end)
+itemt:CreateToggle("Use Field Dice", nil, function(State) kocmoc.toggles.fielddice = State end):AddToolTip("WARNING : Can use a LOT of Field Dice (because it's RNG)")
 local glitterdropdown = itemt:CreateDropdown("Field for Glitter and Filed Dice", fieldstable, function(String) kocmoc.extrasvars.field = String end) glitterdropdown:SetOption(fieldstable[2])
 itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
 itemt:CreateToggle("Use Snowflake", nil, function(State) kocmoc.toggles.snowflake = State end)
