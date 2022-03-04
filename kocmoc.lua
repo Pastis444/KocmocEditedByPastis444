@@ -373,14 +373,14 @@ function itemtimers(item)
                 if boostlvl ~= 0 and boostlvl ~= 4 then
                     repeat
                         enoughdice = rtsg()['Eggs']['FieldDice'] > 0
-                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
+                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name['fielddice']})
                         tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
                         wait(1)
                     until tempboostlvl == boostlvl + 1 or not enoughdice
                 elseif boostlvl == 4 then
                     repeat
                         enoughdice = rtsg()['Eggs']['FieldDice'] > 0
-                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
+                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name['fielddice']})
                         tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
                         wait(1)
                     until os.time() - math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Start']) <= 20 or not enoughdice
@@ -406,13 +406,13 @@ function itemtimers(item)
                 enoughdice = rtsg()['Eggs']['FieldDice'] > 0
                 repeat
                     enoughdice = rtsg()['Eggs']['FieldDice'] > 0
-                    game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
+                    game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name['fielddice']})
                     for i,v in pairs(rtsg()['Modifiers']['PollenBonus']) do
                         n=n+1
                         keyset[n]=i
+                        wait(1)
                         if string.match(keyset[n], 'Zone:'..extrasvars.field) then fielddicelanded = true end
                     end
-                    wait(1)
                 until fielddicelanded or not enoughdice
                 buffs.timers[item] = os.time()
             end
