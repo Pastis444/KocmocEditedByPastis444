@@ -267,6 +267,7 @@ local kocmoc = {
         enzyme = false,
         tropicaldrink = false,
         purplepot = false,
+        jellybean = false,
         snowflake = false
     },
     vars = {
@@ -319,6 +320,7 @@ local buffs = {
         fielddice = 0,
         tropicaldrink = 0,
         purplepot = 0,
+        jellybean = 0,
         snowflake = 0
     },
     name = {
@@ -331,6 +333,7 @@ local buffs = {
         fielddice = "Field Dice",
         tropicaldrink = "Tropical Drink",
         purplepot = "Purple Potion",
+        jellybean = "Jelly Beans"
         snowflake = "Snowflake"
     }
 }
@@ -426,6 +429,11 @@ function itemtimers(item)
         if os.time() - buffs.timers[item] >= 900 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             buffs.timers[item] = os.time()
+        end
+    elseif item == "jellybean" then
+        if os.time() - buffs.timers[item] >= 30 then
+            game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
+            buff.timers[item] = os.time()
         end
     else
         if os.time() - buffs.timers[item] >= 600 then
@@ -963,6 +971,7 @@ local glitterdropdown = itemt:CreateDropdown("Field for Glitter and Filed Dice",
 itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
 itemt:CreateToggle("Use Snowflake", nil, function(State) kocmoc.toggles.snowflake = State end)
 itemt:CreateToggle("Use Purple Potion", nil, function(State) kocmoc.toggles.purplepot = State end)
+itemt:CreateToggle("Use Jelly Beans", nil, function(State) kocmoc.toggles.jellybean = State end)
 
 
 local miscc = misctab:CreateSection("Misc")
@@ -1386,6 +1395,7 @@ task.spawn(function() while task.wait(0.5) do
     if kocmoc.toggles.glitter then itemtimers('glitter') end
     if kocmoc.toggles.purplepot then itemtimers('purplepot') end
     if kocmoc.toggles.fielddice then itemtimers('fielddice') end
+    if kocmoc.toggles.jellybean then itemtimers('jellybean') end
     if kocmoc.toggles.popstarconvert then popstarcounter() end
 end end)
 
