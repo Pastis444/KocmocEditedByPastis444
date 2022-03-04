@@ -22,7 +22,7 @@ function oldmasks() local tab = game.ReplicatedStorage.Events.RetrievePlayerStat
 -- Script tables
 
 local temptable = {
-    version = "2.18.2",
+    version = "2.18.3",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -266,6 +266,7 @@ local kocmoc = {
         fielddice = false,
         enzyme = false,
         tropicaldrink = false,
+        purplepot = false,
         snowflake = false
     },
     vars = {
@@ -303,6 +304,7 @@ local buffTable = {
     "Glue";
     "Glitter";
     "Tropical Drink";
+    "Purple Potion";
     "Snowflake"
 }
 
@@ -316,6 +318,7 @@ local buffs = {
         glitter = 0,
         fielddice = 0,
         tropicaldrink = 0,
+        purplepot = 0,
         snowflake = 0
     },
     name = {
@@ -327,6 +330,7 @@ local buffs = {
         glitter = "Glitter",
         fielddice = "Field Dice",
         tropicaldrink = "Tropical Drink",
+        purplepot = "Purple Potion",
         snowflake = "Snowflake"
     }
 }
@@ -369,14 +373,14 @@ function itemtimers(item)
                 if boostlvl ~= 0 and boostlvl ~= 4 then
                     repeat
                         enoughdice = rtsg()['Eggs']['FieldDice'] > 0
-                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
+                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name['fielddice']})
                         tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
                         wait(1)
                     until tempboostlvl == boostlvl + 1 or not enoughdice
                 elseif boostlvl == 4 then
                     repeat
                         enoughdice = rtsg()['Eggs']['FieldDice'] > 0
-                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
+                        game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name['fielddice']})
                         tempboostlvl = math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Value']+0.5)
                         wait(1)
                     until os.time() - math.floor(rtsg()['Modifiers']['PollenBonus']['Zone:'.. extrasvars.field .. ',']['Mods'][1]['Start']) <= 20 or not enoughdice
@@ -402,21 +406,24 @@ function itemtimers(item)
                 enoughdice = rtsg()['Eggs']['FieldDice'] > 0
                 repeat
                     enoughdice = rtsg()['Eggs']['FieldDice'] > 0
-                    game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[fielddice]})
+                    game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name['fielddice']})
                     for i,v in pairs(rtsg()['Modifiers']['PollenBonus']) do
                         n=n+1
                         keyset[n]=i
+                        wait(1)
                         if string.match(keyset[n], 'Zone:'..extrasvars.field) then fielddicelanded = true end
                     end
-                    wait(1)
                 until fielddicelanded or not enoughdice
                 buffs.timers[item] = os.time()
             end
         end
     elseif item == "snowflake" then
         if os.time() - buffs.timers[item] >= 10 then
-            print("SNOWFLAKE Used")
-            print("SNOWFLAKE Timers : ", buffs.timers[item])
+            game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
+            buffs.timers[item] = os.time()
+        end
+    elseif item == "purplepot" then
+        if os.time() - buffs.timers[item] >= 900 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             buffs.timers[item] = os.time()
         end
@@ -872,6 +879,7 @@ information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
 local changelog = hometab:CreateSection("Changelog")
 changelog:CreateLabel("+ Auto Use Glitter")
+changelog:CreateLabel("+ Auto Use Purple Potion")
 changelog:CreateLabel("+ Auto Use Field Dice")
 --information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
 --information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
@@ -954,6 +962,7 @@ itemt:CreateToggle("Use Field Dice", nil, function(State) kocmoc.toggles.fielddi
 local glitterdropdown = itemt:CreateDropdown("Field for Glitter and Filed Dice", fieldstable, function(String) extrasvars.field = String end) glitterdropdown:SetOption(fieldstable[2])
 itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
 itemt:CreateToggle("Use Snowflake", nil, function(State) kocmoc.toggles.snowflake = State end)
+itemt:CreateToggle("Use Purple Potion", nil, function(State) kocmoc.toggles.purplepot = State end)
 
 
 local miscc = misctab:CreateSection("Misc")
@@ -1375,6 +1384,8 @@ task.spawn(function() while task.wait(0.5) do
     if kocmoc.toggles.tropicaldrink then itemtimers('tropicaldrink') end
     if kocmoc.toggles.snowflake then itemtimers('snowflake') end
     if kocmoc.toggles.glitter then itemtimers('glitter') end
+    if kocmoc.toggles.purplepot then itemtimers('purplepot') end
+    if kocmoc.toggles.fielddice then itemtimers('fielddice') end
     if kocmoc.toggles.popstarconvert then popstarcounter() end
 end end)
 
