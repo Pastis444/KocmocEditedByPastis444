@@ -333,7 +333,7 @@ local buffs = {
         fielddice = "Field Dice",
         tropicaldrink = "Tropical Drink",
         purplepot = "Purple Potion",
-        jellybean = "Jelly Beans"
+        jellybean = "Jelly Beans",
         snowflake = "Snowflake"
     }
 }
