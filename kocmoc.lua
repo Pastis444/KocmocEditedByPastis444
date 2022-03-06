@@ -1244,6 +1244,7 @@ task.spawn(function() while task.wait() do
                         api.humanoidrootpart().CFrame = v.CFrame
                     end
                 end
+                wait(1)
             end
             if extrasvars.demoncounter == 0 then
                 temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
