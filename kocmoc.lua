@@ -26,7 +26,7 @@ for _, v in pairs(game:GetService("CoreGui"):GetDescendants()) do
     end
 end
 local temptable = {
-    version = "2.18.3",
+    version = "2.18.5",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -892,9 +892,8 @@ information:CreateLabel("Script by weuz_ and mrdevl")
 information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
 local changelog = hometab:CreateSection("Changelog")
-changelog:CreateLabel("+ Auto Use Glitter")
-changelog:CreateLabel("+ Auto Use Purple Potion")
-changelog:CreateLabel("+ Auto Use Field Dice")
+changelog:CreateLabel("+ Auto Honney Whreath")
+changelog:CreateLabel("+ Autodig Mode")
 --information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
 --information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
 
