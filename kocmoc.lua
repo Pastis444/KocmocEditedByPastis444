@@ -1236,6 +1236,17 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.popstarconvert then popstarcounter() end
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
+            if kocmoc.toggles.autohoneywreath then
+                if temptable.converting then
+                    game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Honey Wreath")
+                    platformm = game:GetService("Workspace").Toys["Honey Wreath"].Platform
+                    for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
+                        if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
+                            api.humanoidrootpart().CFrame = v.CFrame
+                        end
+                    end
+                end
+            end
             if extrasvars.demoncounter == 0 then
                 temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
             end 
@@ -1509,17 +1520,6 @@ task.spawn(function() while task.wait(.1) do
             for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
                 if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
                     api.humanoidrootpart().CFrame = v.CFrame
-                end
-            end
-        end
-        if kocmoc.toggles.autohoneywreath then
-            if temptable.converting then
-                game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Honey Wreath")
-                platformm = game:GetService("Workspace").Toys["Honey Wreath"].Platform
-                for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-                    if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-                        api.humanoidrootpart().CFrame = v.CFrame
-                    end
                 end
             end
         end
