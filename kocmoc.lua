@@ -432,17 +432,17 @@ function itemtimers(item)
             buffs.timers[item] = os.time()
         end
     elseif item == "purplepot" then
-        if os.time() - buffs.timers[item] >= 900 then
+        if os.time() - buffs.timers[item] >= 905 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             buffs.timers[item] = os.time()
         end
     elseif item == "jellybean" then
-        if os.time() - buffs.timers[item] >= 30 then
+        if os.time() - buffs.timers[item] >= 31 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             buffs.timers[item] = os.time()
         end
     else
-        if os.time() - buffs.timers[item] >= 600 then
+        if os.time() - buffs.timers[item] >= 605 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             buffs.timers[item] = os.time()
         end
