@@ -433,7 +433,7 @@ function itemtimers(item)
     elseif item == "jellybean" then
         if os.time() - buffs.timers[item] >= 30 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
-            buff.timers[item] = os.time()
+            buffs.timers[item] = os.time()
         end
     else
         if os.time() - buffs.timers[item] >= 600 then
