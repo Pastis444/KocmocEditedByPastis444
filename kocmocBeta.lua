@@ -907,7 +907,6 @@ farmo:CreateToggle("Don't Convert Pollen", nil, function(State) kocmoc.toggles.n
 local autofarmtoggle = farmo:CreateToggle("Autofarm ⚙", nil, function(State) kocmoc.toggles.autofarm = State end) autofarmtoggle:CreateKeybind("U", function(Key) end)
 --farmo:CreateToggle("Convert After x Pop Star ⚙", nil, function(State) kocmoc.toggles.popstarconvert = State end):AddToolTip("Default x=3; You can change it in the Settings Tab")
 farmo:CreateToggle("Autodig", nil, function(State) kocmoc.toggles.autodig = State end)
-farmo:CreateDropdown("Autodig Mode", {"Normal","Collector Steal"}, function(Option)  kocmoc.vars.autodigmode = Option end)
 farmo:CreateToggle("Auto Sprinkler", nil, function(State) kocmoc.toggles.autosprinkler = State end)
 farmo:CreateToggle("Farm Bubbles", nil, function(State) kocmoc.toggles.farmbubbles = State end)
 farmo:CreateToggle("Farm Flames", nil, function(State) kocmoc.toggles.farmflame = State end)
@@ -1403,23 +1402,6 @@ task.spawn(function() while task.wait() do
     end
 end end)
 
-local function collectorSteal()
-    if kocmoc.vars.autodigmode == "Collector Steal" then
-        for i,v in pairs(game.Players:GetChildren()) do
-            if v.Name ~= game.Players.LocalPlayer.Name then
-                if v then
-                    if v.Character then
-                        if v.Character:FindFirstChildWhichIsA("Tool") then
-                            if v.Character:FindFirstChildWhichIsA("Tool"):FindFirstChild("ClickEvent") then
-                    v.Character:FindFirstChildWhichIsA("Tool").ClickEvent:FireServer()
-                end
-            end
-        end
-        end
-        end
-        end
-    end
-end
 
 task.spawn(function() while task.wait(0.5) do
     if kocmoc.toggles.blueextract then itemtimers('blueextract') end
@@ -1439,7 +1421,7 @@ end end)
 task.spawn(function() while task.wait(0.001) do
     if kocmoc.toggles.traincrab then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-259, 111.8, 496.4) * CFrame.fromEulerAnglesXYZ(0, 110, 90) temptable.float = true temptable.float = false end
     if kocmoc.toggles.farmrares then for k,v in next, game.workspace.Collectibles:GetChildren() do if v.CFrame.YVector.Y == 1 then if v.Transparency == 0 then decal = v:FindFirstChildOfClass("Decal") for e,r in next, kocmoc.rares do if decal.Texture == r or decal.Texture == "rbxassetid://"..r then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame break end end end end end end
-    if kocmoc.toggles.autodig then if game.Players.LocalPlayer then if game.Players.LocalPlayer.Character then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) then clickevent = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) or nil end end end if clickevent then clickevent:FireServer() end end collectorSteal() workspace.NPCs.Onett.Onett["Porcelain Dipper"].ClickEvent:FireServer() end
+    if kocmoc.toggles.autodig then if game.Players.LocalPlayer then if game.Players.LocalPlayer.Character then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) then clickevent = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) or nil end end end if clickevent then clickevent:FireServer() end end workspace.NPCs.Onett.Onett["Porcelain Dipper"].ClickEvent:FireServer() end
 end end)
 
 game:GetService("Workspace").Particles.Folder2.ChildAdded:Connect(function(child)
