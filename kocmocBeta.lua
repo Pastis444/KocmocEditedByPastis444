@@ -20,9 +20,13 @@ local hi = false
 function oldmasks() local tab = game.ReplicatedStorage.Events.RetrievePlayerStats:InvokeServer() local oldmaskTab = tab["EquippedAccessories"] local oldmask = oldmaskTab["Hat"] return oldmask end
 
 -- Script tables
-
+for _, v in pairs(game:GetService("CoreGui"):GetDescendants()) do
+    if v:IsA("TextLabel") and string.find(v.Text,"Kocmoc v") then
+        v.Parent.Parent:Destroy()
+    end
+end
 local temptable = {
-    version = "2.18.3",
+    version = "2.18.5",
     blackfield = "Ant Field",
     redfields = {},
     bluefields = {},
@@ -31,8 +35,9 @@ local temptable = {
     balloondetected = false,
     puffshroomdetected = false,
     magnitude = 70,
+    starttime = os.time()
     blacklist = {
-        "e_mrFluk2281"
+        ""
     },
     running = false,
     configname = "",
@@ -250,6 +255,7 @@ local kocmoc = {
         autoonettart = false,
         autocandles = false,
         autofeast = false,
+        autohoneywreath = false,
         autoplanters = false,
         autokillmobs = false,
         autoant = false,
@@ -267,6 +273,7 @@ local kocmoc = {
         enzyme = false,
         tropicaldrink = false,
         purplepot = false,
+        jellybean = false,
         snowflake = false
     },
     vars = {
@@ -279,7 +286,8 @@ local kocmoc = {
         npcprefer = "All Quests",
         farmtype = "Walk",
         monstertimer = 3,
-        Keybind = Enum.KeyCode.Semicolon
+        Keybind = Enum.KeyCode.Semicolon,
+        autodigmode = "Normal"
     },
     dispensesettings = {
         blub = false,
@@ -319,6 +327,7 @@ local buffs = {
         fielddice = 0,
         tropicaldrink = 0,
         purplepot = 0,
+        jellybean = 0,
         snowflake = 0
     },
     name = {
@@ -331,6 +340,7 @@ local buffs = {
         fielddice = "Field Dice",
         tropicaldrink = "Tropical Drink",
         purplepot = "Purple Potion",
+        jellybean = "Jelly Beans",
         snowflake = "Snowflake"
     }
 }
@@ -423,12 +433,17 @@ function itemtimers(item)
             buffs.timers[item] = os.time()
         end
     elseif item == "purplepot" then
-        if os.time() - buffs.timers[item] >= 900 then
+        if os.time() - buffs.timers[item] >= 905 then
+            game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
+            buffs.timers[item] = os.time()
+        end
+    elseif item == "jellybean" then
+        if os.time() - buffs.timers[item] >= 31 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             buffs.timers[item] = os.time()
         end
     else
-        if os.time() - buffs.timers[item] >= 600 then
+        if os.time() - buffs.timers[item] >= 605 then
             game:GetService("ReplicatedStorage").Events.PlayerActivesCommand:FireServer({["Name"]=buffs.name[item]})
             buffs.timers[item] = os.time()
         end
@@ -855,7 +870,7 @@ function makequests()
     end end end end end
 end
 
-local Config = { WindowName = "🌘  kocmoc | "..temptable.version, Color = Color3.fromRGB(164, 84, 255)}
+local Config = { WindowName = "🌘  Kocmoc v"..temptable.version, Color = Color3.fromRGB(164, 84, 255)}
 local Window = library:CreateWindow(Config, game:GetService("CoreGui"))
 
 local hometab = Window:CreateTab("Home")
@@ -877,10 +892,10 @@ information:CreateLabel("Place version: "..game.PlaceVersion)
 information:CreateLabel("Script by weuz_ and mrdevl")
 information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
+local elapsetime = information:CreateLabel("Time Elapse: 00:00:00")
 local changelog = hometab:CreateSection("Changelog")
-changelog:CreateLabel("+ Auto Use Glitter")
-changelog:CreateLabel("+ Auto Use Purple Potion")
-changelog:CreateLabel("+ Auto Use Field Dice")
+changelog:CreateLabel("+ Auto Honney Whreath")
+changelog:CreateLabel("+ Autodig Mode")
 --information:CreateButton("Discord Invite", function() setclipboard("https://discord.gg/9vG8UJXuNf") end)
 --information:CreateButton("Donation", function() setclipboard("https://qiwi.com/n/W33UZ") end)
 
@@ -892,6 +907,7 @@ farmo:CreateToggle("Don't Convert Pollen", nil, function(State) kocmoc.toggles.n
 local autofarmtoggle = farmo:CreateToggle("Autofarm ⚙", nil, function(State) kocmoc.toggles.autofarm = State end) autofarmtoggle:CreateKeybind("U", function(Key) end)
 --farmo:CreateToggle("Convert After x Pop Star ⚙", nil, function(State) kocmoc.toggles.popstarconvert = State end):AddToolTip("Default x=3; You can change it in the Settings Tab")
 farmo:CreateToggle("Autodig", nil, function(State) kocmoc.toggles.autodig = State end)
+farmo:CreateDropdown("Autodig Mode", {"Normal","Collector Steal"}, function(Option)  kocmoc.vars.autodigmode = Option end)
 farmo:CreateToggle("Auto Sprinkler", nil, function(State) kocmoc.toggles.autosprinkler = State end)
 farmo:CreateToggle("Farm Bubbles", nil, function(State) kocmoc.toggles.farmbubbles = State end)
 farmo:CreateToggle("Farm Flames", nil, function(State) kocmoc.toggles.farmflame = State end)
@@ -912,6 +928,7 @@ farmt:CreateToggle("Auto Stockings", nil, function(State) kocmoc.toggles.autosto
 farmt:CreateToggle("Auto Planters", nil, function(State) kocmoc.toggles.autoplanters = State end):AddToolTip("Will re-plant your planters after converting, if they hit x%")
 farmt:CreateToggle("Auto Honey Candles", nil, function(State) kocmoc.toggles.autocandles = State end)
 farmt:CreateToggle("Auto Beesmas Feast", nil, function(State) kocmoc.toggles.autofeast = State end)
+farmt:CreateToggle("Auto Honey Wreath", nil, function(State) kocmoc.toggles.autohoneywreath = State end):AddToolTip("Will go to Honey Wreath when you have a full bag")
 farmt:CreateToggle("Auto Onett's Lid Art", nil, function(State) kocmoc.toggles.autoonettart = State end)
 farmt:CreateToggle("Auto Free Antpasses", nil, function(State) kocmoc.toggles.freeantpass = State end)
 farmt:CreateToggle("Farm Sprouts", nil, function(State) kocmoc.toggles.farmsprouts = State end)
@@ -963,6 +980,7 @@ local glitterdropdown = itemt:CreateDropdown("Field for Glitter and Filed Dice",
 itemt:CreateToggle("Use Tropical Drink", nil, function(State) kocmoc.toggles.tropicaldrink = State end)
 itemt:CreateToggle("Use Snowflake", nil, function(State) kocmoc.toggles.snowflake = State end)
 itemt:CreateToggle("Use Purple Potion", nil, function(State) kocmoc.toggles.purplepot = State end)
+itemt:CreateToggle("Use Jelly Beans", nil, function(State) kocmoc.toggles.jellybean = State end)
 
 
 local miscc = misctab:CreateSection("Misc")
@@ -1220,6 +1238,16 @@ task.spawn(function() while task.wait() do
                 if kocmoc.toggles.popstarconvert then popstarcounter() end
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
+            if kocmoc.toggles.autohoneywreath then
+                game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Honey Wreath")
+                platformm = game:GetService("Workspace").Toys["Honey Wreath"].Platform
+                for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
+                    if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
+                        api.humanoidrootpart().CFrame = v.CFrame
+                    end
+                end
+                wait(1)
+            end
             if extrasvars.demoncounter == 0 then
                 temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
             end 
@@ -1375,6 +1403,24 @@ task.spawn(function() while task.wait() do
     end
 end end)
 
+local function collectorSteal()
+    if kocmoc.vars.autodigmode == "Collector Steal" then
+        for i,v in pairs(game.Players:GetChildren()) do
+            if v.Name ~= game.Players.LocalPlayer.Name then
+                if v then
+                    if v.Character then
+                        if v.Character:FindFirstChildWhichIsA("Tool") then
+                            if v.Character:FindFirstChildWhichIsA("Tool"):FindFirstChild("ClickEvent") then
+                    v.Character:FindFirstChildWhichIsA("Tool").ClickEvent:FireServer()
+                end
+            end
+        end
+        end
+        end
+        end
+    end
+end
+
 task.spawn(function() while task.wait(0.5) do
     if kocmoc.toggles.blueextract then itemtimers('blueextract') end
     if kocmoc.toggles.redextract then itemtimers('redextract') end
@@ -1386,13 +1432,14 @@ task.spawn(function() while task.wait(0.5) do
     if kocmoc.toggles.glitter then itemtimers('glitter') end
     if kocmoc.toggles.purplepot then itemtimers('purplepot') end
     if kocmoc.toggles.fielddice then itemtimers('fielddice') end
+    if kocmoc.toggles.jellybean then itemtimers('jellybean') end
     if kocmoc.toggles.popstarconvert then popstarcounter() end
 end end)
 
 task.spawn(function() while task.wait(0.001) do
     if kocmoc.toggles.traincrab then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-259, 111.8, 496.4) * CFrame.fromEulerAnglesXYZ(0, 110, 90) temptable.float = true temptable.float = false end
     if kocmoc.toggles.farmrares then for k,v in next, game.workspace.Collectibles:GetChildren() do if v.CFrame.YVector.Y == 1 then if v.Transparency == 0 then decal = v:FindFirstChildOfClass("Decal") for e,r in next, kocmoc.rares do if decal.Texture == r or decal.Texture == "rbxassetid://"..r then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame break end end end end end end
-    if kocmoc.toggles.autodig then workspace.NPCs.Onett.Onett["Porcelain Dipper"].ClickEvent:FireServer() if game.Players.LocalPlayer then if game.Players.LocalPlayer.Character then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) then clickevent = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) or nil end end end if clickevent then clickevent:FireServer() end end end
+    if kocmoc.toggles.autodig then if game.Players.LocalPlayer then if game.Players.LocalPlayer.Character then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) then clickevent = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("ClickEvent", true) or nil end end end if clickevent then clickevent:FireServer() end end collectorSteal() workspace.NPCs.Onett.Onett["Porcelain Dipper"].ClickEvent:FireServer() end
 end end)
 
 game:GetService("Workspace").Particles.Folder2.ChildAdded:Connect(function(child)
@@ -1501,6 +1548,7 @@ task.spawn(function() while task.wait(1) do
     if kocmoc.toggles.clock then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Wealth Clock") end
     if kocmoc.toggles.freeantpass then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Free Ant Pass Dispenser") end
     gainedhoneylabel:UpdateText("Gained Honey: "..api.suffixstring(temptable.honeycurrent - temptable.honeystart))
+    elapsetime:UpdateText("Time Elapse: "..api.suffixstring(os.date('%X', os.time() - temptable.starttime)))
     if kocmoc.toggles.autocloudvial then 
         local stats = game:GetService("ReplicatedStorage").Events.RetrievePlayerStats:InvokeServer()
         local lastWindy = stats.SystemTimes.WindShrine
