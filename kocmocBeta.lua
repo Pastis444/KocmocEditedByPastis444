@@ -22,7 +22,7 @@ function oldmasks() local tab = game.ReplicatedStorage.Events.RetrievePlayerStat
 -- Script tables
 for _, v in pairs(game:GetService("CoreGui"):GetDescendants()) do
     if v:IsA("TextLabel") and string.find(v.Text,"Kocmoc v") then
-        v.Parent.Parent:Destroy()
+        v.Parent.Parent.Parent:Destroy()
     end
 end
 
