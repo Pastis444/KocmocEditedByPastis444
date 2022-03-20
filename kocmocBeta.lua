@@ -1238,14 +1238,7 @@ task.spawn(function() while task.wait() do
             end
         elseif tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
             if kocmoc.toggles.autohoneywreath then
-                game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Honey Wreath")
-                platformm = game:GetService("Workspace").Toys["Honey Wreath"].Platform
-                for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-                    if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-                        api.humanoidrootpart().CFrame = v.CFrame
-                    end
-                end
-                wait(1)
+                wait(2)
             end
             if extrasvars.demoncounter == 0 then
                 temptable.oldequippedmask = rtsg()["EquippedAccessories"]["Hat"]
@@ -1503,6 +1496,23 @@ task.spawn(function() while task.wait(.1) do
             for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
                 if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
                     api.humanoidrootpart().CFrame = v.CFrame
+                end
+            end
+        end
+        if game.Players.LocalPlayer.Character:FindFirstChild("ProgressLabel",true) then
+            local pollenprglbl = game.Players.LocalPlayer.Character:FindFirstChild("ProgressLabel",true)
+            maxpollen = tonumber(pollenprglbl.Text:match("%d+$"))
+            local pollencount = game.Players.LocalPlayer.CoreStats.Pollen.Value
+            pollenpercentage = pollencount/maxpollen*100
+            if tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
+                if kocmoc.toggles.autohoneywreath then
+                    game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Honey Wreath")
+                    platformm = game:GetService("Workspace").Toys["Honey Wreath"].Platform
+                    for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
+                        if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
+                            api.humanoidrootpart().CFrame = v.CFrame
+                        end
+                    end
                 end
             end
         end
