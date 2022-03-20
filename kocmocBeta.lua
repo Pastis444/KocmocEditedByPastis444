@@ -1505,7 +1505,7 @@ task.spawn(function() while task.wait(.1) do
             maxpollen = tonumber(pollenprglbl.Text:match("%d+$"))
             local pollencount = game.Players.LocalPlayer.CoreStats.Pollen.Value
             pollenpercentage = pollencount/maxpollen*100
-            if tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.convertion and not kocmoc.toggles.noconvertpollen then
+            if tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.noconvertpollen then
                 if kocmoc.toggles.autohoneywreath then
                     game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Honey Wreath")
                     platformm = game:GetService("Workspace").Toys["Honey Wreath"].Platform
