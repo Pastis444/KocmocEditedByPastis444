@@ -25,6 +25,7 @@ for _, v in pairs(game:GetService("CoreGui"):GetDescendants()) do
         v.Parent.Parent:Destroy()
     end
 end
+
 local temptable = {
     version = "2.18.5",
     blackfield = "Ant Field",
@@ -1541,7 +1542,7 @@ task.spawn(function() while task.wait(1) do
     if kocmoc.toggles.freeantpass then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Free Ant Pass Dispenser") end
     gainedhoneylabel:UpdateText("Gained Honey: "..api.suffixstring(temptable.honeycurrent - temptable.honeystart))
     elapsetime:UpdateText("Time Elapse: "..os.date('%X', os.time() - temptable.starttime))
-    print(os.time() - temptable.starttime))
+    print(os.time() - temptable.starttime)
     if kocmoc.toggles.autocloudvial then 
         local stats = game:GetService("ReplicatedStorage").Events.RetrievePlayerStats:InvokeServer()
         local lastWindy = stats.SystemTimes.WindShrine
