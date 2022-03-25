@@ -1541,7 +1541,7 @@ task.spawn(function() while task.wait(1) do
     if kocmoc.toggles.clock then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Wealth Clock") end
     if kocmoc.toggles.freeantpass then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Free Ant Pass Dispenser") end
     gainedhoneylabel:UpdateText("Gained Honey: "..api.suffixstring(temptable.honeycurrent - temptable.honeystart))
-    elapsetime:UpdateText("Time Elapse: "..os.date('%X', os.time() - temptable.starttime))
+    elapsetime:UpdateText("Time Elapse: "..os.date('!%X', os.time() - temptable.starttime))
     
     if kocmoc.toggles.autocloudvial then 
         local stats = game:GetService("ReplicatedStorage").Events.RetrievePlayerStats:InvokeServer()
