@@ -302,7 +302,6 @@ local kocmoc = {
         blue = false
     },
     planterat = 100
-    }
 }
 
 local defaultkocmoc = kocmoc
