@@ -300,6 +300,9 @@ local kocmoc = {
         white = false,
         red = false,
         blue = false
+    },
+    extrasvars = {
+        planterat = 100
     }
 }
 
@@ -349,7 +352,6 @@ local extrasvars = {
     demoncounter = 0,
     popstarmustconvert = false,
     popstartimer = 3,
-    planterat = 100,
     field = "Sunflower Field",
     timers = {
         popstar = 0
@@ -619,7 +621,7 @@ function getplanters()
     table.clear(planterst.plantername)
     table.clear(planterst.planterid)
     for i,v in pairs(debug.getupvalues(require(game:GetService("ReplicatedStorage").LocalPlanters).LoadPlanter)[4]) do 
-        if v.GrowthPercent >= (extrasvars.planterat/100) and v.IsMine then
+        if v.GrowthPercent >= (kocmoc.extrasvars.planterat/100) and v.IsMine then
             table.insert(planterst.plantername, v.Type)
             table.insert(planterst.planterid, v.ActorID)
         end
@@ -1016,7 +1018,7 @@ farmsettings:CreateToggle("Convert Hive Balloon",nil, function(State) kocmoc.tog
 farmsettings:CreateToggle("Don't Farm Tokens",nil, function(State) kocmoc.toggles.donotfarmtokens = State end)
 farmsettings:CreateToggle("Enable Token Blacklisting",nil, function(State) kocmoc.toggles.enabletokenblacklisting = State end)
 --farmsettings:CreateTextBox('Convert Pollen After x Pop Star', 'default = 3', true, function(Value) extrasvars.popstartimer = tonumber(Value) end)
-farmsettings:CreateSlider("Collect Planters At", 0, 100, 100, false, function(Value) extrasvars.planterat = Value end)
+farmsettings:CreateSlider("Collect Planters At", 0, 100, 100, false, function(Value) kocmoc.extrasvars.planterat = Value end)
 farmsettings:CreateSlider("Walk Speed", 0, 120, 70, false, function(Value) kocmoc.vars.walkspeed = Value end)
 farmsettings:CreateSlider("Jump Power", 0, 120, 70, false, function(Value) kocmoc.vars.jumppower = Value end)
 local raresettings = setttab:CreateSection("Tokens Settings")
