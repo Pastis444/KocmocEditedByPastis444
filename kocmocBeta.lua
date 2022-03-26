@@ -1510,7 +1510,7 @@ task.spawn(function() while task.wait(.1) do
         if tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.noconvertpollen then
             if kocmoc.toggles.autohoneywreath then
                 temptable.collecthoneytoken = true
-                wait(5)
+                wait(10)
                 temptable.collecthoneytoken = false
             end
         end
