@@ -1204,7 +1204,7 @@ task.spawn(function() while task.wait() do
                             disableall()
                             game:GetService("Workspace").Map.Ground.HighBlock.CanCollide = false 
                             mondopition = game.Workspace.Monsters["Mondo Chick (Lvl 8)"].Head.Position
-                            api.tween(1, CFrame.new(mondopition.x, mondopition.y - 60, mondopition.z))
+                            api.tween(1, CFrame.new(mondopition.x, mondopition.y - 50, mondopition.z))
                             task.wait(1)
                             temptable.float = true
                         end
