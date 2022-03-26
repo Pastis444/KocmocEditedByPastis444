@@ -132,7 +132,8 @@ local temptable = {
     ['gacf'] = function(part, st)
         coordd = CFrame.new(part.Position.X, part.Position.Y+st, part.Position.Z)
         return coordd
-    end
+    end,
+    collecthoneytoken = false
 }
 
 local planterst = {
@@ -1508,13 +1509,21 @@ task.spawn(function() while task.wait(.1) do
         pollenpercentage = pollencount/maxpollen*100
         if tonumber(pollenpercentage) >= tonumber(kocmoc.vars.convertat) and not kocmoc.toggles.noconvertpollen then
             if kocmoc.toggles.autohoneywreath then
-                game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Honey Wreath")
-                platformm = game:GetService("Workspace").Toys["Honey Wreath"].Platform
-                for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
-                    if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
-                        api.humanoidrootpart().CFrame = v.CFrame
-                    end
-                end
+                temptable.collecthoneytoken = true
+                wait(5)
+                temptable.collecthoneytoken = false
+            end
+        end
+    end
+end end)
+
+task.spawn(function() while task.wait(.1) do
+    if temptable.collecthoneytoken then
+        game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Honey Wreath")
+        platformm = game:GetService("Workspace").Toys["Honey Wreath"].Platform
+        for i,v in pairs(game.Workspace.Collectibles:GetChildren()) do
+            if (v.Position-platformm.Position).magnitude < 25 and v.CFrame.YVector.Y == 1 then
+                api.humanoidrootpart().CFrame = v.CFrame
             end
         end
     end
