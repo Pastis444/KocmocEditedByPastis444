@@ -895,6 +895,7 @@ information:CreateLabel("Script by weuz_ and mrdevl")
 information:CreateLabel("Edited by Pastis444")
 local gainedhoneylabel = information:CreateLabel("Gained Honey: 0")
 local elapsetime = information:CreateLabel("Time Elapse: 00:00:00")
+local windyfavor = information:CreateLabel("Windy Favor: 0")
 local changelog = hometab:CreateSection("Changelog")
 changelog:CreateLabel("+ Auto Honney Whreath")
 changelog:CreateLabel("+ Autodig Mode")
@@ -1551,6 +1552,7 @@ task.spawn(function() while task.wait(1) do
     if kocmoc.toggles.freeantpass then game:GetService("ReplicatedStorage").Events.ToyEvent:FireServer("Free Ant Pass Dispenser") end
     gainedhoneylabel:UpdateText("Gained Honey: "..api.suffixstring(temptable.honeycurrent - temptable.honeystart))
     elapsetime:UpdateText("Time Elapse: "..os.date('!%X', os.time() - temptable.starttime))
+    windyfavor:UpdateText("Windy Favor: "..rtsg()['WindShrine']['WindyFavor'])
     
     if kocmoc.toggles.autocloudvial then 
         local stats = game:GetService("ReplicatedStorage").Events.RetrievePlayerStats:InvokeServer()
